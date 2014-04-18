@@ -348,7 +348,8 @@ void CColorBasics::ProcessColorDepth()
 }
 
 RNG rng(12345);
-void CColorBasics::ShapeBoundingbox(float* objPosX, float* objPosY, float* objHeight, float* objWidth, int& shapeNum, float* boundingBox, float* objHue)
+void CColorBasics::ShapeBoundingbox(float* objPosX, float* objPosY, float* objHeight, float* objWidth, int& shapeNum, 
+	float* boundingBox, float* objHue, ContourPoints* contourPts)
 {
 	//int thresh = 80;
 	int max_thresh = 255;
@@ -404,13 +405,20 @@ void CColorBasics::ShapeBoundingbox(float* objPosX, float* objPosY, float* objHe
 		}
 
 
-		if(radius[i] > minRadius && radius[i] < maxRadius){//all the actuall objs we need
+		if(radius[i] > minRadius && radius[i] < maxRadius){//all the actual objs we need
+			
 			objPosX[shapeNum] = center[i].x;
 			objPosY[shapeNum] = center[i].y;
 			objHeight[shapeNum] = boundRect[i].height;
 			objWidth[shapeNum] = boundRect[i].width;
 
-			contours_poly[i].size();
+			for(int k = 0; k < contours_poly[i].size() && k < POINTNUM; k++)
+			{
+				contourPts[shapeNum].posX[k] = contours_poly[i][k].x;
+				contourPts[shapeNum].posY[k] = contours_poly[i][k].y;
+			}
+			
+			contourPts[shapeNum].size = contours_poly[i].size();
 			
 
 			//Find the color of the polygon(currently only bounding box) created by the contour

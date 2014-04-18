@@ -12,9 +12,18 @@
 
 #define EXE
 
+#define POINTNUM 1000
+
+struct ContourPoints
+{
+	float posX[POINTNUM];
+	float posY[POINTNUM];
+	int size;
+};
+
+
 //#define DEPTHDISPLAY
 /// Function header
-
 class CColorBasics
 {
     static const int        cColorWidth  = 640;
@@ -88,5 +97,5 @@ public:
 
 	void					ProcessColorDepth();
 
-	void					ShapeBoundingbox(float*, float*, float*, float*, int&, float*, float*);
+	void					ShapeBoundingbox(float*, float*, float*, float*, int&, float*, float*, ContourPoints*);
 };
