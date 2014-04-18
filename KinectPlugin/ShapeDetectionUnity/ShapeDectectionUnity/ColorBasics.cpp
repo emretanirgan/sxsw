@@ -404,14 +404,13 @@ void CColorBasics::ShapeBoundingbox(float* objPosX, float* objPosY, float* objHe
 		}
 
 
-		if(radius[i] > minRadius && radius[i] < maxRadius){			
+		if(radius[i] > minRadius && radius[i] < maxRadius){//all the actuall objs we need
 			objPosX[shapeNum] = center[i].x;
 			objPosY[shapeNum] = center[i].y;
 			objHeight[shapeNum] = boundRect[i].height;
 			objWidth[shapeNum] = boundRect[i].width;
 
-			//int colorIndex = center[i].x * img->width + center[i].y;
-			//img[colorIndex] = 20;
+			contours_poly[i].size();
 			
 
 			//Find the color of the polygon(currently only bounding box) created by the contour
@@ -424,37 +423,7 @@ void CColorBasics::ShapeBoundingbox(float* objPosX, float* objPosY, float* objHe
 			objHue[shapeNum*3+1] = color[1];
 			objHue[shapeNum*3+2] = color[2];
 
-
-			//Potentially a more accurate way - find the average hue
-			//Mat img_hsv;
-			////convert from rgb to hsv
-			//cvtColor(img_roi, img_hsv, CV_BGR2HSV);
-			//Mat channels[3];
-			////split into channels of h, s, v
-			//split(img_hsv, channels);
-			//Scalar avghue = mean(channels[0]);
-			//objHue[shapeNum] = avghue[0];
 			shapeNum++;
-
-//			//Convert from hsv to rgb, using avghue, max saturation and value
-//			Scalar maxhsv = Scalar(avghue[0], 255, 255, 0);
-//			Scalar huecolor;
-////			cvtColor(maxhsv, huecolor, CV_HSV2BGR);
-//
-//			//Find the color of the polygon(currently only bounding box) created by the contour
-//			Mat img_roi = Mat(src, boundRect[i]);
-//			Scalar avgPixelIntensity = mean(img_roi);
-//			Scalar color = avgPixelIntensity;
-//			//Scalar color = Scalar( rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255) );
-//
-//			//Potentially a more accurate way - find the average hue
-//			Mat img_hsv;
-//			//convert from rgb to hsv
-//			cvtColor(img_roi, img_hsv, CV_BGR2HSV);
-//			Mat channels[3];
-//			//split into channels of h, s, v
-//			split(img_hsv, channels);
-//			Scalar avghue = mean(channels[0]);
 
 			drawContours( drawing, contours_poly, i, color, 1, 8, vector<Vec4i>(), 0, Point() );
 			rectangle( drawing, boundRect[i].tl(), boundRect[i].br(), color, 2, 8, 0 );

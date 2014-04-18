@@ -25,6 +25,7 @@ int main()
 	colorKinect.maxRadius = 120;
 	colorKinect.minRadius = 40;
 	colorKinect.threshhold = 180;
+	colorKinect.debugMode = true;
 	colorKinect.CreateFirstConnected();
 	int shapeNum = 0;
 
