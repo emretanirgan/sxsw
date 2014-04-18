@@ -12,15 +12,19 @@ extern "C"
 {
 	static CColorBasics colorKinect;
 	int EXPORT_API detectShape(float minRadius, float maxRadius, int threshold, 
-		float* objPosX, float* objPosY, float* objHeight, float* objWidth, float* boundingBox, float* objHue)
+		float* objPosX, float* objPosY, float* objHeight, float* objWidth, float* boundingBox, float* objHue, bool debugMode)
 	{
 		colorKinect.maxRadius = maxRadius;
 		colorKinect.minRadius = minRadius;
 		colorKinect.threshhold = threshold;
+		colorKinect.debugMode = debugMode;
 		colorKinect.CreateFirstConnected();
 		int shapeNum = 0;
 		
+		int countTimes = 0;
 		while(1){
+			if(countTimes++ == 20);
+				return shapeNum;
 			Sleep(100);
 			if ( WAIT_OBJECT_0 == WaitForSingleObject(colorKinect.m_hNextColorFrameEvent, 0) )
 			{

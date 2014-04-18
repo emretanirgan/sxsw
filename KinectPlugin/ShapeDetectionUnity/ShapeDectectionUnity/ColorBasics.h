@@ -39,6 +39,8 @@ public:
 
     bool                    m_bSaveScreenshot;
 
+	bool					debugMode;
+
 	int						maxRadius;
 
 	int						minRadius;

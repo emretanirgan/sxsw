@@ -211,12 +211,13 @@ void CColorBasics::ProcessColor()
 		cvSmooth(imgThresh, imgThresh, CV_GAUSSIAN,3,3);
 
 		//CV_IMAGE_ELEM(imgThresh, uchar, 0,0);
-
-		namedWindow( "Color", CV_WINDOW_AUTOSIZE );
-		imshow( "Color", m);
+		if(debugMode){
+			namedWindow( "Color", CV_WINDOW_AUTOSIZE );
+			imshow( "Color", m);
 #ifdef EXE
-		if( waitKey (30) >= 0) return;
+			if( waitKey (30) >= 0) return;
 #endif
+		}
         // Draw the data with Direct2D
 		//#ifndef DEPTHDISPLAY
 		//        m_pDrawColor->Draw(static_cast<BYTE *>(LockedRect.pBits), LockedRect.size);
@@ -419,36 +420,41 @@ void CColorBasics::ShapeBoundingbox(float* objPosX, float* objPosY, float* objHe
 			Scalar color = avgPixelIntensity;
 			//Scalar color = Scalar( rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255) );
 
+			objHue[shapeNum*3] = color[0];
+			objHue[shapeNum*3+1] = color[1];
+			objHue[shapeNum*3+2] = color[2];
+
+
 			//Potentially a more accurate way - find the average hue
-			Mat img_hsv;
-			//convert from rgb to hsv
-			cvtColor(img_roi, img_hsv, CV_BGR2HSV);
-			Mat channels[3];
-			//split into channels of h, s, v
-			split(img_hsv, channels);
-			Scalar avghue = mean(channels[0]);
-			objHue[shapeNum] = avghue[0];
+			//Mat img_hsv;
+			////convert from rgb to hsv
+			//cvtColor(img_roi, img_hsv, CV_BGR2HSV);
+			//Mat channels[3];
+			////split into channels of h, s, v
+			//split(img_hsv, channels);
+			//Scalar avghue = mean(channels[0]);
+			//objHue[shapeNum] = avghue[0];
 			shapeNum++;
 
-			//Convert from hsv to rgb, using avghue, max saturation and value
-			Scalar maxhsv = Scalar(avghue[0], 255, 255, 0);
-			Scalar huecolor;
-//			cvtColor(maxhsv, huecolor, CV_HSV2BGR);
-
-			//Find the color of the polygon(currently only bounding box) created by the contour
-			Mat img_roi = Mat(src, boundRect[i]);
-			Scalar avgPixelIntensity = mean(img_roi);
-			Scalar color = avgPixelIntensity;
-			//Scalar color = Scalar( rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255) );
-
-			//Potentially a more accurate way - find the average hue
-			Mat img_hsv;
-			//convert from rgb to hsv
-			cvtColor(img_roi, img_hsv, CV_BGR2HSV);
-			Mat channels[3];
-			//split into channels of h, s, v
-			split(img_hsv, channels);
-			Scalar avghue = mean(channels[0]);
+//			//Convert from hsv to rgb, using avghue, max saturation and value
+//			Scalar maxhsv = Scalar(avghue[0], 255, 255, 0);
+//			Scalar huecolor;
+////			cvtColor(maxhsv, huecolor, CV_HSV2BGR);
+//
+//			//Find the color of the polygon(currently only bounding box) created by the contour
+//			Mat img_roi = Mat(src, boundRect[i]);
+//			Scalar avgPixelIntensity = mean(img_roi);
+//			Scalar color = avgPixelIntensity;
+//			//Scalar color = Scalar( rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255) );
+//
+//			//Potentially a more accurate way - find the average hue
+//			Mat img_hsv;
+//			//convert from rgb to hsv
+//			cvtColor(img_roi, img_hsv, CV_BGR2HSV);
+//			Mat channels[3];
+//			//split into channels of h, s, v
+//			split(img_hsv, channels);
+//			Scalar avghue = mean(channels[0]);
 
 			drawContours( drawing, contours_poly, i, color, 1, 8, vector<Vec4i>(), 0, Point() );
 			rectangle( drawing, boundRect[i].tl(), boundRect[i].br(), color, 2, 8, 0 );
@@ -457,11 +463,14 @@ void CColorBasics::ShapeBoundingbox(float* objPosX, float* objPosY, float* objHe
 	}
 
 	//Show in a window
-	namedWindow( "Contours", CV_WINDOW_AUTOSIZE );
-	imshow( "Contours", drawing );
+
+	if(debugMode){
+		namedWindow( "Contours", CV_WINDOW_AUTOSIZE );
+		imshow( "Contours", drawing );
 #ifdef EXE
-	if( waitKey (30) >= 0) return;
+		if( waitKey (30) >= 0) return;
 #endif
+	}
 }
 
 

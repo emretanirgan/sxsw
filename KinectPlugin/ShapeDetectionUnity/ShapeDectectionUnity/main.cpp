@@ -37,7 +37,7 @@ int main()
 			break;
 		}
 	}
-	
+	system("pause");
 	return 0;
-	//system("pause");
+	
 }
