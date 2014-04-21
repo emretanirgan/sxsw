@@ -47,9 +47,11 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\Collision.cs" />
+     <Compile Include="Assets\Scripts\CreateMesh.cs" />
      <Compile Include="Assets\Scripts\LevelSetup.cs" />
      <Compile Include="Assets\Scripts\ResultGlobal.cs" />
      <Compile Include="Assets\Scripts\Spring.cs" />
+     <Compile Include="Assets\Scripts\Triangulator.cs" />
      <Compile Include="Assets\Scripts\gear.cs" />
      <Compile Include="Assets\Scripts\sliding.cs" />
      <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_BloomAndFlares\BlendOneOne.shader" />

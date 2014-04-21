@@ -21,10 +21,13 @@ int main()
 		boudingBox[i] = 0;
 	}
 
+	ContourPoints* contourPts = new ContourPoints[100];
+
 	static CColorBasics colorKinect;
 	colorKinect.maxRadius = 120;
 	colorKinect.minRadius = 40;
 	colorKinect.threshhold = 180;
+	colorKinect.debugMode = true;
 	colorKinect.CreateFirstConnected();
 	int shapeNum = 0;
 
@@ -33,11 +36,11 @@ int main()
 		if ( WAIT_OBJECT_0 == WaitForSingleObject(colorKinect.m_hNextColorFrameEvent, 0) )
 		{
 			colorKinect.ProcessColor();			
-			colorKinect.ShapeBoundingbox(objPosX, objPosY, objHeight, objWidth, shapeNum, boudingBox, objHue);
+			colorKinect.ShapeBoundingbox(objPosX, objPosY, objHeight, objWidth, shapeNum, boudingBox, objHue, contourPts);
 			break;
 		}
 	}
-	
+	system("pause");
 	return 0;
-	//system("pause");
+	
 }
