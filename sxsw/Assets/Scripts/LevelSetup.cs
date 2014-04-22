@@ -6,6 +6,24 @@ using System.Collections.Generic;
 
 
 public class LevelSetup : MonoBehaviour {
+	public const int posSize = 1000;
+
+
+	//the data to pass to dll
+	[StructLayout(LayoutKind.Sequential, Pack = 1)]
+	public struct UnityContourPoints
+	{
+		[MarshalAs(UnmanagedType.ByValArray, SizeConst = posSize)]
+		public float[] posX;
+		[MarshalAs(UnmanagedType.ByValArray, SizeConst = posSize)]
+		public float[] posY;
+		public int size;//size of these points
+	}
+
+	[DllImport("ShapeDetectionUnity")]
+	public static extern int detectShape(float minRadius, float maxRadius, int threshold, float[] objPosX, float[] objPosY, float[] objHeight, float[] objWidth, float[] boundingBox, float[] objBGR, bool debugging, UnityContourPoints[] unityContourPts); 
+
+
 
 	float minRadius = 20;
 	float maxRadius = 140;
@@ -16,6 +34,7 @@ public class LevelSetup : MonoBehaviour {
 	float[] objWidth;
 	float[] boundingBox;
 	float[] objBGR;
+	UnityContourPoints[] unityContourPts;
 	bool scanned = false;
 	
 	public Camera mainCam;
@@ -28,8 +47,6 @@ public class LevelSetup : MonoBehaviour {
 	public GameObject spring_platform;
 	float levelDepth;
 
-	[DllImport("ShapeDetectionUnity")]
-	public static extern int detectShape(float minRadius, float maxRadius, int threshold, float[] objPosX, float[] objPosY, float[] objHeight, float[] objWidth, float[] boundingBox, float[] objBGR, bool debugging); 
 
 
 	public AudioSource scanAs;
@@ -45,11 +62,19 @@ public class LevelSetup : MonoBehaviour {
 		objWidth = new float[100];
 		objBGR = new float[100];
 		boundingBox = new float[4];
+		unityContourPts = new UnityContourPoints[100];
 
 		
 		for(int i = 0; i < 100; i++)
 		{
 			objPosX[i] = objPosY[i] = objHeight[i] = objWidth[i] = objBGR[i] = 0;
+
+			unityContourPts[i].posX = new float [posSize];
+			unityContourPts[i].posY = new float [posSize];
+
+			for(int j = 0; j < posSize; j++)
+				unityContourPts[i].posX[j] = unityContourPts[i].posY[j] = 0;
+			unityContourPts[i].size = 0;
 		}
 		boundingBox[0] = 0;
 		boundingBox[1] = 0;
@@ -67,7 +92,7 @@ public class LevelSetup : MonoBehaviour {
 		{
 			scanned = true;
 			scanAs.Play();
-			int sizeNum = detectShape(minRadius, maxRadius, threshold, objPosX, objPosY, objHeight, objWidth, boundingBox, objBGR, false);
+			int sizeNum = detectShape(minRadius, maxRadius, threshold, objPosX, objPosY, objHeight, objWidth, boundingBox, objBGR, true, unityContourPts);
 
 			for(int i = 0; i < 4; i++)
 			{
@@ -86,7 +111,7 @@ public class LevelSetup : MonoBehaviour {
 				float averageValue = (objBGR[3*i+2] + objBGR[3*i+1] + objBGR[3*i]) / 3;
 				float blackThreshold = 20;
 
-				print("Color Value: " + (objBGR[3*i+2] + ", " +  objBGR[3*i+1] + ", " +  objBGR[3*i]));
+				//print("Color Value: " + (objBGR[3*i+2] + ", " +  objBGR[3*i+1] + ", " +  objBGR[3*i]));
 				if((objBGR[3*i+2] - averageValue) < blackThreshold && (objBGR[3*i+1] - averageValue) < blackThreshold && (objBGR[3*i] - averageValue) < blackThreshold)
 					newPlatform = Instantiate(start_platform) as GameObject;
 				else if(objBGR[3*i+2] == primeValue)
@@ -106,9 +131,6 @@ public class LevelSetup : MonoBehaviour {
 				newPlatform.transform.position = mainCam.ScreenToWorldPoint(screenPosition);
 				newPlatform.transform.localScale = new Vector3(objWidth[i] / (boundingBox[2] - boundingBox[0]) * 160, objHeight[i] / (boundingBox[3] - boundingBox[1]) * 120, 20);
 
-
-
-
 			}
 
 			// place player on top of starting platform
@@ -126,8 +148,13 @@ public class LevelSetup : MonoBehaviour {
 			
 			Destroy(GameObject.Find("White Screen"));
 			Destroy(GameObject.Find("Black Block"));
-			
+
 			print(sizeNum);
+
+			for(int i = 0; i < sizeNum; i++)
+			{
+				print("unity contours " + unityContourPts[i].size);
+			}
 		}
 		
 	}
