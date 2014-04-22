@@ -21,7 +21,16 @@ public class LevelSetup : MonoBehaviour {
 	}
 
 	[DllImport("ShapeDetectionUnity")]
-	public static extern int detectShape(float minRadius, float maxRadius, int threshold, float[] objPosX, float[] objPosY, float[] objHeight, float[] objWidth, float[] boundingBox, float[] objBGR, bool debugging, UnityContourPoints[] unityContourPts); 
+	public static extern int detectShape(float minRadius, float maxRadius, int threshold, 
+	                                     float[] objPosX, float[] objPosY, float[] objHeight, 
+	                                     float[] objWidth, float[] boundingBox, float[] objBGR, 
+	                                     bool debugging,  
+	                                     [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=11)]UnityContourPoints[] unityContourPts, int length); 
+	/*public static extern int detectShape(float minRadius, float maxRadius, int threshold, 
+	                                     float[] objPosX, float[] objPosY, float[] objHeight, 
+	                                     float[] objWidth, float[] boundingBox, float[] objBGR, 
+	                                     bool debugging,  
+	                                     ref UnityContourPoints[] unityContourPts);*/
 
 
 
@@ -92,7 +101,7 @@ public class LevelSetup : MonoBehaviour {
 		{
 			scanned = true;
 			scanAs.Play();
-			int sizeNum = detectShape(minRadius, maxRadius, threshold, objPosX, objPosY, objHeight, objWidth, boundingBox, objBGR, true, unityContourPts);
+			int sizeNum = detectShape(minRadius, maxRadius, threshold, objPosX, objPosY, objHeight, objWidth, boundingBox, objBGR, true, unityContourPts, 100);
 
 			for(int i = 0; i < 4; i++)
 			{

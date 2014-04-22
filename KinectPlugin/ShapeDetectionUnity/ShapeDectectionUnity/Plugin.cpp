@@ -48,7 +48,7 @@ extern "C"
 	static CColorBasics colorKinect;
 	int EXPORT_API detectShape(float minRadius, float maxRadius, int threshold, 
 		float* objPosX, float* objPosY, float* objHeight, float* objWidth, float* boundingBox, float* objHue,
-		bool debugMode, UnityContourPoints* unityContourPts)
+		bool debugMode, UnityContourPoints* unityContourPts, int length)
 	{
 		colorKinect.maxRadius = maxRadius;
 		colorKinect.minRadius = minRadius;
