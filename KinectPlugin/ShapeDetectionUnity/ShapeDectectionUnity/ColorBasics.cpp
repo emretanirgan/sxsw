@@ -420,6 +420,18 @@ void CColorBasics::ShapeBoundingbox(float* objPosX, float* objPosY, float* objHe
 			
 			contourPts[shapeNum].size = contours_poly[i].size();
 			
+			/*
+			// Create a mask for each contour to mask out that region from image.
+			Mat mask = Mat::zeros(img->nSize, CV_8UC1);
+			drawContours(mask, contours_poly, i, Scalar(255), CV_FILLED); // This is a OpenCV function
+
+			// At this point, mask has value of 255 for pixels within the contour and value of 0 for those not in contour.
+
+			// Extract region using mask for region
+			Mat contourRegion;
+			Mat imageROI;
+			image.copyTo(imageROI, mask); // 'image' is the image you used to compute the contours.
+			contourRegion = imageROI(roi);*/
 
 			//Find the color of the polygon(currently only bounding box) created by the contour
 			Mat img_roi = Mat(src, boundRect[i]);
