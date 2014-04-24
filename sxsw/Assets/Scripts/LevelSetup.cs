@@ -106,6 +106,11 @@ public class LevelSetup : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if(Input.GetKeyDown(KeyCode.R))
+		{
+			Application.LoadLevel(Application.loadedLevel);
+		}
+
 		if(Input.GetButtonDown("scan") && !scanned)
 		{
 			scanned = true;
@@ -168,24 +173,40 @@ public class LevelSetup : MonoBehaviour {
 			{
 				print ("We have to have one and only one starting platform");
 			}
-			
+
 			Destroy(GameObject.Find("White Screen"));
-			Destroy(GameObject.Find("Black Block"));
+			//Destroy(GameObject.Find("Black Block"));
 
 			print(sizeNum);
 
-			for(int i = 0; i < sizeNum; i++)
-			{
-				Mesh m;
-				print("unity contours " + unityContourPts[i].size);
-
-				CreateMesh meshScript = gameObject.GetComponent<CreateMesh>();
-				m = meshScript.extrudeMesh(unityContourPts[i].posX, unityContourPts[i].posY);
-
-				gameObject.AddComponent(typeof(MeshRenderer));
-				MeshFilter filter = gameObject.AddComponent(typeof(MeshFilter)) as MeshFilter;
-				filter.mesh = m;
-			}
+//			for(int i = 0; i < sizeNum; i++)
+//			{
+//				Mesh m;
+//				print("unity contours " + unityContourPts[i].size);
+//				for (int j=0; j<unityContourPts[i].size; j++)
+//					print ("contour x: " + unityContourPts[i].posX[j]);
+//				//unityContourPts[i].s
+//				print ("center x: " + objPosX[i]);
+//
+//				CreateMesh meshScript = gameObject.GetComponent<CreateMesh>();
+//				m = meshScript.extrudeMesh(unityContourPts[i].posX, unityContourPts[i].posY, unityContourPts[i].size);
+//
+//				GameObject go = new GameObject();
+//				go.AddComponent(typeof(MeshRenderer));
+//				MeshFilter filter = go.AddComponent(typeof(MeshFilter)) as MeshFilter;
+//				filter.mesh = m;
+//
+//				Vector3 screenPosition = new Vector3((boundingBox[2] - objPosX[i]) / (boundingBox[2] - boundingBox[0]) * Screen.currentResolution.width, 
+//				                                     Screen.currentResolution.height - (objPosY[i] - boundingBox[1]) / (boundingBox[3] - boundingBox[1]) * Screen.currentResolution.height, 
+//				                                     levelDepth); 
+//				//print ("previous: " + (Screen.currentResolution.width - (objPosX[i] - boundingBox[0]) / (boundingBox[2] - boundingBox[0]) * Screen.currentResolution.width));
+//				//print ("now: " + ((boundingBox[2] - objPosX[i]) / (boundingBox[2] - boundingBox[0]) * Screen.currentResolution.width));
+//				filter.transform.position = mainCam.ScreenToWorldPoint(screenPosition);
+//				filter.transform.localPosition = new Vector3(filter.transform.position.x, 12, filter.transform.position.z);
+//				filter.transform.localScale = new Vector3(objWidth[i] / (boundingBox[2] - boundingBox[0]) * 160, objHeight[i] / (boundingBox[3] - boundingBox[1]) * 120, 20);
+//
+//
+//			}
 
 
 

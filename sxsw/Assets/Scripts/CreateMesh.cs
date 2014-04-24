@@ -30,11 +30,11 @@ public class CreateMesh : MonoBehaviour {
 		
 	}
 	
-	public Mesh extrudeMesh(float [] polyX, float [] polyY)
+	public Mesh extrudeMesh(float [] polyX, float [] polyY, int size)
 		
 	{
-		Vector2 [] poly = new Vector2[polyX.Length];
-		for(int i=0; i<polyX.Length; i++){
+		Vector2 [] poly = new Vector2[size];
+		for(int i=0; i<size; i++){
 			Vector2 v = new Vector2(polyX[i], polyY[i]);
 			poly[i] = v;
 		}
@@ -61,11 +61,11 @@ public class CreateMesh : MonoBehaviour {
 			
 			vertices[i].z = -10; // front vertex
 			
-			vertices[i+polyX.Length].x = polyX[i];
+			vertices[i+poly.Length].x = polyX[i];
 			
-			vertices[i+polyX.Length].y = polyY[i];
+			vertices[i+poly.Length].y = polyY[i];
 			
-			vertices[i+polyX.Length].z = 10;  // back vertex     
+			vertices[i+poly.Length].z = 10;  // back vertex     
 			
 		}
 		
