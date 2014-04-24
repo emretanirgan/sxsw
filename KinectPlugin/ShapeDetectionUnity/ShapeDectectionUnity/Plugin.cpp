@@ -1,4 +1,5 @@
 #include<Windows.h>
+#include <array>
 #include "ColorBasics.h"
 
 #if _MSC_VER // this is defined when compiling with Visual Studio
@@ -36,7 +37,7 @@ extern "C"
 	{
 		for(int i = 0; i < objSize; i++)
 		{
-			for(int j = 0; j < POINTNUM; j++)
+			for(int j = 0; j < contourPt[i].size; j++)
 			{
 				unityContourPt[i].posX[j] = contourPt[i].posX[j];
 				unityContourPt[i].posY[j] = contourPt[i].posY[j];
@@ -48,7 +49,7 @@ extern "C"
 	static CColorBasics colorKinect;
 	int EXPORT_API detectShape(float minRadius, float maxRadius, int threshold, 
 		float* objPosX, float* objPosY, float* objHeight, float* objWidth, float* boundingBox, float* objHue,
-		bool debugMode, UnityContourPoints unityContourPts[])
+		bool debugMode, UnityContourPoints* unityContourPts)
 	{
 		colorKinect.maxRadius = maxRadius;
 		colorKinect.minRadius = minRadius;
@@ -81,4 +82,18 @@ extern "C"
 
 		return shapeNum;
 	}
+
+
+	void EXPORT_API testStruct(UnityContourPoints* unityContourPts)
+	{ 
+		for(int i = 0; i < 100; i++)
+		{
+			for(int j = 0; j < 100; j++){
+				unityContourPts[i].posX[j] = 2;
+				unityContourPts[i].posY[j] = 10;
+			}
+			unityContourPts[i].size = 3;
+		}
+	}
+
 }
