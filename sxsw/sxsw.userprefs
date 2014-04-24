@@ -1,8 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\LevelSetup.cs">
     <Files>
-      <File FileName="Assets\Scripts\LevelSetup.cs" Line="106" Column="1" />
+      <File FileName="Assets\Scripts\LevelSetup.cs" Line="78" Column="4" />
+      <File FileName="Assets\Scripts\LevelSetup.cs" Line="21" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
