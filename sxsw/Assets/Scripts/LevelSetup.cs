@@ -10,7 +10,7 @@ public class LevelSetup : MonoBehaviour {
 
 
 	//the data to pass to dll
-	[StructLayout(LayoutKind.Sequential, Pack = 1)]
+	[StructLayout(LayoutKind.Sequential)]
 	public struct UnityContourPoints
 	{
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = posSize)]
@@ -20,12 +20,19 @@ public class LevelSetup : MonoBehaviour {
 		public int size;//size of these points
 	}
 
+
+
+
 	[DllImport("ShapeDetectionUnity")]
 	public static extern int detectShape(float minRadius, float maxRadius, int threshold, 
 	                                     float[] objPosX, float[] objPosY, float[] objHeight, 
 	                                     float[] objWidth, float[] boundingBox, float[] objBGR, 
 	                                     bool debugging,  
-	                                     [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=11)]UnityContourPoints[] unityContourPts, int length); 
+	                                     [Out][MarshalAs(UnmanagedType.LPArray)]UnityContourPoints[] unityContourPts); 
+
+
+	[DllImport("ShapeDetectionUnity")]
+	public static extern void testStruct([Out][MarshalAs(UnmanagedType.LPArray)] UnityContourPoints[] unityContourPts); 
 	/*public static extern int detectShape(float minRadius, float maxRadius, int threshold, 
 	                                     float[] objPosX, float[] objPosY, float[] objHeight, 
 	                                     float[] objWidth, float[] boundingBox, float[] objBGR, 
@@ -43,7 +50,7 @@ public class LevelSetup : MonoBehaviour {
 	float[] objWidth;
 	float[] boundingBox;
 	float[] objBGR;
-	UnityContourPoints[] unityContourPts;
+	UnityContourPoints [] unityContourPts;
 	bool scanned = false;
 	
 	public Camera mainCam;
@@ -71,6 +78,8 @@ public class LevelSetup : MonoBehaviour {
 		objWidth = new float[100];
 		objBGR = new float[100];
 		boundingBox = new float[4];
+
+
 		unityContourPts = new UnityContourPoints[100];
 
 		
@@ -101,7 +110,10 @@ public class LevelSetup : MonoBehaviour {
 		{
 			scanned = true;
 			scanAs.Play();
-			int sizeNum = detectShape(minRadius, maxRadius, threshold, objPosX, objPosY, objHeight, objWidth, boundingBox, objBGR, true, unityContourPts, 100);
+			int sizeNum = detectShape(minRadius, maxRadius, threshold, objPosX, objPosY, objHeight, objWidth, boundingBox, objBGR, true, unityContourPts);
+
+
+			//testStruct(unityContourPts);
 
 			for(int i = 0; i < 4; i++)
 			{
