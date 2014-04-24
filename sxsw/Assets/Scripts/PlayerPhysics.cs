@@ -68,7 +68,7 @@ public class PlayerPhysics : MonoBehaviour {
 			float y = p.y + c.y + s.y/2 * dir; // Bottom of collider
 			
 			ray = new Ray(new Vector3(x,y, transform.position.z), new Vector2(0,dir));
-//			Debug.DrawRay(ray.origin,ray.direction, Color.white, 3f);
+			Debug.DrawRay(ray.origin,ray.direction, Color.white, 3f);
 //			Debug.Log("drawing vertical rays");
 			
 			if (Physics.Raycast(ray,out hit,Mathf.Abs(deltaY) + skin,collisionMask)) {
@@ -109,7 +109,7 @@ public class PlayerPhysics : MonoBehaviour {
 				float y = p.y + c.y - s.y/2 + s.y/(collisionDivisionsY-1) * i;
 				
 				ray = new Ray(new Vector3(x,y, transform.position.z), new Vector2(dir,0));
-//				Debug.DrawRay(ray.origin,ray.direction, Color.white, 3f);
+				Debug.DrawRay(ray.origin,ray.direction, Color.white, 3f);
 //				Debug.Log("Drawing sideways rays");
 				
 				if (Physics.Raycast(ray,out hit,Mathf.Abs(deltaX) + skin,collisionMask)) {
