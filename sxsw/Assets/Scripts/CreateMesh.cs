@@ -6,7 +6,7 @@ public class CreateMesh : MonoBehaviour {
 	Mesh m;
 	// Use this for initialization
 	void Start () {
-		Vector2 v1 = new Vector2(0,0);
+		/*Vector2 v1 = new Vector2(0,0);
 		Vector2 v2 = new Vector2(10,0);
 		Vector2 v3 = new Vector2(10,10);
 		Vector2 v4 = new Vector2(0,10);
@@ -21,7 +21,7 @@ public class CreateMesh : MonoBehaviour {
 		// Set up game object with mesh;
 		gameObject.AddComponent(typeof(MeshRenderer));
 		MeshFilter filter = gameObject.AddComponent(typeof(MeshFilter)) as MeshFilter;
-		filter.mesh = m;
+		filter.mesh = m;*/
 		
 	}
 	
@@ -30,9 +30,14 @@ public class CreateMesh : MonoBehaviour {
 		
 	}
 	
-	Mesh extrudeMesh(Vector2 [] poly)
+	public Mesh extrudeMesh(float [] polyX, float [] polyY)
 		
 	{
+		Vector2 [] poly = new Vector2[polyX.Length];
+		for(int i=0; i<polyX.Length; i++){
+			Vector2 v = new Vector2(polyX[i], polyY[i]);
+			poly[i] = v;
+		}
 		
 		// convert polygon to triangles
 		
@@ -50,17 +55,17 @@ public class CreateMesh : MonoBehaviour {
 			
 		{
 			
-			vertices[i].x = poly[i].x;
+			vertices[i].x = polyX[i];
 			
-			vertices[i].y = poly[i].y;
+			vertices[i].y = polyY[i];
 			
 			vertices[i].z = -10; // front vertex
 			
-			vertices[i+poly.Length].x = poly[i].x;
+			vertices[i+polyX.Length].x = polyX[i];
 			
-			vertices[i+poly.Length].y = poly[i].y;
+			vertices[i+polyX.Length].y = polyY[i];
 			
-			vertices[i+poly.Length].z = 10;  // back vertex     
+			vertices[i+polyX.Length].z = 10;  // back vertex     
 			
 		}
 		

@@ -176,8 +176,19 @@ public class LevelSetup : MonoBehaviour {
 
 			for(int i = 0; i < sizeNum; i++)
 			{
+				Mesh m;
 				print("unity contours " + unityContourPts[i].size);
+
+				CreateMesh meshScript = gameObject.GetComponent<CreateMesh>();
+				m = meshScript.extrudeMesh(unityContourPts[i].posX, unityContourPts[i].posY);
+
+				gameObject.AddComponent(typeof(MeshRenderer));
+				MeshFilter filter = gameObject.AddComponent(typeof(MeshFilter)) as MeshFilter;
+				filter.mesh = m;
 			}
+
+
+
 		}
 		
 	}
