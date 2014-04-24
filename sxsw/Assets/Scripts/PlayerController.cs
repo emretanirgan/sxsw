@@ -119,7 +119,8 @@ public class PlayerController : Entity {
 		// Input
 		moveDirX = Input.GetAxisRaw("Horizontal");
 		if (!sliding) {
-			float speed = (Input.GetButton("Run"))?runSpeed:walkSpeed;
+		//	float speed = (Input.GetButton("Run"))?runSpeed:walkSpeed;
+			float speed = runSpeed;
 			targetSpeed = moveDirX * speed;
 			currentSpeed = IncrementTowards(currentSpeed, targetSpeed,acceleration);
 			

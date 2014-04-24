@@ -156,10 +156,12 @@ public class LevelSetup : MonoBehaviour {
 
 			// place player on top of starting platform
 			GameObject[] startingPlatforms = GameObject.FindGameObjectsWithTag("start");
-			if(startingPlatforms.Length == 1)
+			if(startingPlatforms.Length >= 1)
 			{
+				print ("instantiating");
 				player = Instantiate(player) as GameObject;
-				Vector3 startingPos = startingPlatforms[0].transform.position + new Vector3(0, startingPlatforms[0].transform.localScale.y + player.transform.localScale.y * 0.5f * player.GetComponent<CharacterController>().height, 0);
+				//Vector3 startingPos = startingPlatforms[0].transform.position + new Vector3(0, startingPlatforms[0].transform.localScale.y + player.transform.localScale.y * 0.5f * player.GetComponent<CharacterController>().height, 0);
+				Vector3 startingPos =  startingPlatforms[0].transform.position + new Vector3(0, 5, 0);
 				player.transform.position = startingPos;
 			}
 			else
