@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 [RequireComponent(typeof(PlayerPhysics))]
-public class PlayerController : Entity {
+public class PlayerController : MonoBehaviour {
 	
 	// Player Handling
 	public float gravity = 20;
