@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Collision : MonoBehaviour {
+public class BackupCollision : MonoBehaviour {
 	public int life = 3;
 	public Vector3 positionori;
 	public AudioSource deathas;
