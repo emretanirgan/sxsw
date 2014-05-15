@@ -19,6 +19,9 @@ public class BgChangePlatform : BasePlatform {
 		
 		//Debug.Log("trigger in BgChangePlatform");
 		if(other.gameObject.layer == LayerMask.NameToLayer("Floor Detector"))
+		{
 		   Toolbox.Instance.background.CycleTexture();
+			Toolbox.Instance.videoBackground.PlayNextVideo();
+		}
 	}
 }

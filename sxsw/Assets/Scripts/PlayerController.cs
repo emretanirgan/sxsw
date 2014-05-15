@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour {
 	
 	// Player Handling
 	public float gravity = 20;
+	public float maxGravityForce = 5f;
 	public float walkSpeed = 8;
 	public float runSpeed = 12;
 	public float acceleration = 30;
@@ -35,11 +36,14 @@ public class PlayerController : MonoBehaviour {
 	
 
 	void Start () {
+		Debug.Log(Application.dataPath);
 		playerPhysics = GetComponent<PlayerPhysics>();
 		animator = GetComponent<Animator>();
 		manager = Camera.main.GetComponent<GameManager>();
-		animator.SetLayerWeight(1,1);
+//		animator.SetLayerWeight(1,1);
 	}
+	
+	
 	
 	void Update () {
 		// Reset acceleration upon collision
@@ -143,7 +147,10 @@ public class PlayerController : MonoBehaviour {
 			}
 		}
 		
-		amountToMove.y -= gravity * Time.deltaTime;
+		if(amountToMove.y >  -maxGravityForce) 
+			amountToMove.y -= gravity * Time.deltaTime;
+		
+//		Debug.Log("amt to move y = " + amountToMove.y);
 		playerPhysics.Move(amountToMove * Time.deltaTime, moveDirX);
 	
 	}
