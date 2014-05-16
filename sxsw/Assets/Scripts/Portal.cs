@@ -1,17 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
+//using System;
+//using System.Runtime.InteropServices;
 
 public class Portal : MonoBehaviour {
 	public GameObject[] PortalList;
 	public GameObject PortalTarget;
-	Global globalObj;
+	public GameObject boomParticle;
+	trial globalObj;
 	int i = 0, current;
 	// Use this for initialization
 	void Start () {
 	
 		GameObject g = GameObject.Find ("Global Object");
-		globalObj = g.GetComponent<Global> ();
-
+		globalObj = g.GetComponent<trial> ();
+		if (globalObj == null){
+			Debug.Log("ERROR: globalObj IS NULL\n");
+		}
+		
 		PortalList = GameObject.FindGameObjectsWithTag ("portal");
 		for (int j = 0; j<PortalList.Length; j++) {
 			if(PortalList[j].gameObject == gameObject)
@@ -22,7 +28,7 @@ public class Portal : MonoBehaviour {
 				} while(i==current);
 		PortalTarget = PortalList [i];
 
-		Debug.Log (PortalTarget);
+		Debug.Log ("target portal is:" + PortalTarget);
 	}
 	
 	// Update is called once per frame
@@ -31,10 +37,16 @@ public class Portal : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider collider){
-		if (collider.tag == "Player" && globalObj.transferred ==0){
-			globalObj.transferred = 1;
-			collider.gameObject.transform.position = PortalTarget.transform.position;
-			collider.gameObject.transform.position += Vector3.up*3;
+		if (globalObj == null){
+			Debug.Log("ERROR: globalObj IS NULL\n");
+		}
+		else{
+			if (collider.tag == "Player" && globalObj.transferred ==0){
+				globalObj.transferred = 1;
+				collider.gameObject.transform.position = PortalTarget.transform.position + Vector3.up*5;  // collider.gameObject.transform.position+Vector3.up*5
+				GameObject BoomInstance = Instantiate (boomParticle, PortalTarget.transform.position+Vector3.up*16, Quaternion.Euler(-90,0,0)) as GameObject;
+				GameObject BoomInstance2 = Instantiate (boomParticle, transform.position+Vector3.up*16, Quaternion.Euler(-90,0,0))as GameObject;
 			}
 		}
+	}
 }
