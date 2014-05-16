@@ -15,12 +15,15 @@ public class HeadTrigger : MonoBehaviour {
 	
 	
 	void OnTriggerEnter(Collider other) {
-		Debug.Log(other.gameObject.name);
+//		Debug.Log(other.gameObject.name);
 		//		Destroy(other.gameObject);
 		
 //		HOTween.To(gameObject.transform, 1, "position", new Vector3(10,20,30));
 		if(other.gameObject.layer == LayerMask.NameToLayer("Leg Trigger"))
+		{
 		   thisPlayer.Dead();
+			other.SendMessageUpwards("JumpedOnTop", SendMessageOptions.RequireReceiver);
+		}
 		
 	}
 }
