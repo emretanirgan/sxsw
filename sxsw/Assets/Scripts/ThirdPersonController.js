@@ -17,6 +17,8 @@ public var walkaudioclip:AudioClip;
 
 private var _animation : Animation;
 
+
+
 enum CharacterState {
 	Idle = 0,
 	Walking = 1,
@@ -50,11 +52,12 @@ var rotateSpeed = 500.0;
 var trotAfterSeconds = 3.0;
 
 var canJump = true;
-
+private var friction:float = 1.0f;
+private var coeff:float = 1.0f;
 private var jumpRepeatTime = 0.1;
 private var jumpTimeout = 0.15;
 private var groundedTimeout = 0.25;
-
+private var slip:int = 0;
 // The camera doesnt start following the target immediately but waits for a split second to avoid too much waving around.
 private var lockCameraTimer = 0.0;
 
@@ -98,9 +101,15 @@ private var isControllable = true;
 private var groundNormal = Vector3.up;
 
 private var lastPlatform : GameObject;
+var globalObj;
+
+
 
 function Awake ()
 {
+	var g:GameObject  = GameObject.Find ("Global Object");
+	globalObj = g.GetComponent("Global");
+	
 	walkaudiosource = gameObject.AddComponent("AudioSource");
 	walkaudiosource.clip = walkaudioclip;	
 	moveDirection = transform.TransformDirection(Vector3.forward);	
@@ -193,6 +202,7 @@ function UpdateSmoothedMovementDirection ()
 		}
 		
 		// Smooth the speed based on the current target direction
+		speedSmoothing = 10.0*friction *friction;
 		var curSmooth = speedSmoothing * Time.deltaTime;
 		
 		// Choose target speed
@@ -264,6 +274,26 @@ function OnTriggerEnter(other : Collider){
 	if(other.gameObject.tag == "spring"){
 		Debug.Log("Collision with spring");
 		verticalSpeed = spring_up_vertical_speed;
+	}
+	if(other.gameObject.tag == "slippery"){
+		Debug.Log("Collision with slippery");
+		verticalSpeed = 100;
+		friction = 0.7f;
+		//moveSpeed = 100;
+		slip = 1;
+	}
+	if(other.gameObject.tag == "portal"){
+		Debug.Log("Collision with portal");
+		verticalSpeed = 80;
+	
+	}
+}
+
+function OnTriggerExit(other : Collider){
+	if (other.gameObject.tag == "slippery") {
+		Debug.Log("Exit slippery");
+		friction = 1.0f; // restore regular friction
+		slip = 0;
 	}
 }
 
@@ -343,7 +373,11 @@ function Update() {
 	//Debug.Log("moveSpeed" + moveSpeed);
 	//Debug.Log("dot" + Vector3.Dot(moveDirection, groundNormal));
 	//moveDirection += -2 * Vector3.up;
-	var movement = moveDirection * (Mathf.Min(2, 1 + Mathf.Sqrt(2) * Vector3.Dot(moveDirection, groundNormal))) * moveSpeed + Vector3 (0, verticalSpeed, 0) + inAirVelocity;
+	if(slip == 1)
+  		coeff = 6.0f;
+	else
+		coeff = 1.0f;
+	var movement = moveDirection * (Mathf.Min(2, 1 + Mathf.Sqrt(2) * Vector3.Dot(moveDirection, groundNormal))) * coeff *moveSpeed + Vector3 (0, verticalSpeed, 0) + inAirVelocity;
 	movement.z = 0;
 	//Debug.Log("movement" + movement);
 
@@ -397,9 +431,10 @@ function Update() {
 				}
 				else if(_characterState == CharacterState.Walking) {
 					_animation[walkAnimation.name].speed = Mathf.Clamp(controller.velocity.magnitude, 0.0, walkMaxAnimationSpeed);
-					_animation.CrossFade(walkAnimation.name);		
-					print(controller.velocity.magnitude);
-					print("walking!");			
+					_animation.CrossFade(walkAnimation.name);
+						
+					//print(controller.velocity.magnitude);
+					//print("walking!");			
 //					_animation.audio = walkaudiosource;
 //					_animation.audio.Play();					
 				}

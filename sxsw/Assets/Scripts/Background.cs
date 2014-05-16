@@ -7,12 +7,21 @@ public class Background : MonoBehaviour
 	
 	public Texture[] backgrounds;
 	
+	private int currentBg;
+	
 	public enum Backgrounds
 	{
 		One,
 		Two, 
 		Three
 	}
+	
+	void Start()
+	{
+		currentBg = 0;
+		
+	}
+	
 
 	void Update()
 	{
@@ -22,11 +31,19 @@ public class Background : MonoBehaviour
 	
 	public void SetTexture(Backgrounds bg)
 	{
-		renderer.material.mainTexture =  backgrounds[(int)bg];	
+		currentBg = (int)bg;
+		renderer.material.mainTexture =  backgrounds[currentBg];	
 	}
 	
 	public void SetRandomTexture()
 	{
+		currentBg = Random.Range(0, backgrounds.Length);
+		renderer.material.mainTexture =  backgrounds[currentBg];	
+	}
+	
+	public void CycleTexture()
+	{
+		currentBg = (currentBg + 1) % backgrounds.Length;
 		renderer.material.mainTexture =  backgrounds[Random.Range(0, backgrounds.Length)];	
 	}
 }
