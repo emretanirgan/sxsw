@@ -70,7 +70,9 @@ public class LevelSetup : MonoBehaviour {
 	//calibration stuff
 	void OnGUI() {
 		//stringToEdit = GUI.TextField(new Rect(10, 10, 200, 20), stringToEdit, 25);
+		GUI.Label (new Rect(25, 5, 250, 30), "Threshold: " + hSliderValue);
 		hSliderValue = GUI.HorizontalSlider(new Rect(25, 25, 100, 30), hSliderValue, 0.0F, 255.0F);
+
 	}
 
 	public AudioSource scanAs;
