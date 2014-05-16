@@ -4,8 +4,8 @@ using System.Collections;
 public class CameraShake : MonoBehaviour
 {
 	private float shakePower = 0;
-	private float shakeSpeed = 12;
-	private float shakeDecay = 4;
+	private float shakeSpeed = 20;
+	private float shakeDecay = 2;
 	private Perlin perlin;
 
 	void Start()

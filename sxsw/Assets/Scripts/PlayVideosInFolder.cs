@@ -17,6 +17,17 @@ public class PlayVideosInFolder : MonoBehaviour
 	
 	// Use this for initialization
 	void Start () {
+		if(Application.platform != RuntimePlatform.WindowsEditor)
+		{
+		    path = Application.dataPath;
+			path += "/../Videos";
+		}
+		
+//		Debug.Log(Application.dataPath + "/../");
+		
+//		this.enabled = false;
+//		return;
+	
 		// Getting list of all files in folder
 		DirectoryInfo dir = new DirectoryInfo(path);
 		vids = dir.GetFiles("*.ogg");
@@ -35,6 +46,8 @@ public class PlayVideosInFolder : MonoBehaviour
 		{
 			Debug.LogError("No videos found to playback");
 		}
+		
+		
 	
 //		renderer.material.mainTexture = movieTex;
 //		movieTex.Play();

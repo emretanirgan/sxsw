@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System;
 using System.Runtime.InteropServices;
@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 public class LevelSetup : MonoBehaviour {
 	public const int posSize = 1000;
-
+	public Material blockMaterial;
 
 	//the data to pass to dll
 	[StructLayout(LayoutKind.Sequential)]
@@ -26,7 +26,7 @@ public class LevelSetup : MonoBehaviour {
 	[DllImport("ShapeDetectionUnity")]
 	public static extern int detectShape(float minRadius, float maxRadius, int threshold, 
 	                                     float[] objPosX, float[] objPosY, float[] objHeight, 
-	                                     float[] objWidth, float[] boundingBox, float[] objBGR, 
+	                                     float[] objWidth, float[] objAngle, float[] boundingBox, float[] objBGR, 
 	                                     bool debugging,  
 	                                     [Out][MarshalAs(UnmanagedType.LPArray)]UnityContourPoints[] unityContourPts); 
 
@@ -43,15 +43,17 @@ public class LevelSetup : MonoBehaviour {
 
 	float minRadius = 20;
 	float maxRadius = 140;
-	int threshold = 150; //range 0-255
+	public int threshold = 130; //range 0-255
 	float[] objPosX;
 	float[] objPosY;
 	float[] objHeight;
 	float[] objWidth;
 	float[] boundingBox;
 	float[] objBGR;
+	float[] objAngle;
 	UnityContourPoints [] unityContourPts;
 	bool scanned = false;
+	bool scanStart = false;
 	
 	public Camera mainCam;
 	public Transform ground;
@@ -77,6 +79,7 @@ public class LevelSetup : MonoBehaviour {
 		objHeight = new float[100];
 		objWidth = new float[100];
 		objBGR = new float[100];
+		objAngle = new float[100];
 		boundingBox = new float[4];
 
 
@@ -85,7 +88,7 @@ public class LevelSetup : MonoBehaviour {
 		
 		for(int i = 0; i < 100; i++)
 		{
-			objPosX[i] = objPosY[i] = objHeight[i] = objWidth[i] = objBGR[i] = 0;
+			objPosX[i] = objPosY[i] = objHeight[i] = objWidth[i] = objBGR[i] = objAngle[i] = 0;
 
 			unityContourPts[i].posX = new float [posSize];
 			unityContourPts[i].posY = new float [posSize];
@@ -101,6 +104,8 @@ public class LevelSetup : MonoBehaviour {
 		
 
 		levelDepth = Mathf.Abs((mainCam.transform.position - ground.position).z);
+		//levelDepth = (player.transform.TransformPoint (player.transform.position)).z/2;
+		//levelDepth = 5;
 
 	}
 	
@@ -113,9 +118,11 @@ public class LevelSetup : MonoBehaviour {
 
 		if(Input.GetButtonDown("scan") && !scanned)
 		{
-			scanned = true;
+			scanStart = true;
+			//scanned = animateScan();
+			//scanned = true;
 			scanAs.Play();
-			int sizeNum = detectShape(minRadius, maxRadius, threshold, objPosX, objPosY, objHeight, objWidth, boundingBox, objBGR, true, unityContourPts);
+			int sizeNum = detectShape(minRadius, maxRadius, threshold, objPosX, objPosY, objHeight, objWidth, objAngle, boundingBox, objBGR, true, unityContourPts);
 
 
 			//testStruct(unityContourPts);
@@ -155,8 +162,10 @@ public class LevelSetup : MonoBehaviour {
 				//print ("previous: " + (Screen.currentResolution.width - (objPosX[i] - boundingBox[0]) / (boundingBox[2] - boundingBox[0]) * Screen.currentResolution.width));
 				//print ("now: " + ((boundingBox[2] - objPosX[i]) / (boundingBox[2] - boundingBox[0]) * Screen.currentResolution.width));
 				newPlatform.transform.position = mainCam.ScreenToWorldPoint(screenPosition);
+				newPlatform.transform.position = new Vector3(newPlatform.transform.position.x, newPlatform.transform.position.y, player.transform.position.z);
+				newPlatform.transform.eulerAngles = new Vector3(newPlatform.transform.eulerAngles.x, newPlatform.transform.eulerAngles.y, objAngle[i]);
 				newPlatform.transform.localScale = new Vector3(objWidth[i] / (boundingBox[2] - boundingBox[0]) * 160, objHeight[i] / (boundingBox[3] - boundingBox[1]) * 120, 20);
-
+				newPlatform.layer = LayerMask.NameToLayer ("Collisions");
 			}
 
 			// place player on top of starting platform
@@ -178,39 +187,86 @@ public class LevelSetup : MonoBehaviour {
 			//Destroy(GameObject.Find("Black Block"));
 
 			print(sizeNum);
+			/*
+			for(int i = 0; i < sizeNum; i++)
+			{
 
-//			for(int i = 0; i < sizeNum; i++)
-//			{
-//				Mesh m;
-//				print("unity contours " + unityContourPts[i].size);
-//				for (int j=0; j<unityContourPts[i].size; j++)
-//					print ("contour x: " + unityContourPts[i].posX[j]);
-//				//unityContourPts[i].s
-//				print ("center x: " + objPosX[i]);
-//
-//				CreateMesh meshScript = gameObject.GetComponent<CreateMesh>();
-//				m = meshScript.extrudeMesh(unityContourPts[i].posX, unityContourPts[i].posY, unityContourPts[i].size);
-//
-//				GameObject go = new GameObject();
-//				go.AddComponent(typeof(MeshRenderer));
-//				MeshFilter filter = go.AddComponent(typeof(MeshFilter)) as MeshFilter;
-//				filter.mesh = m;
-//
-//				Vector3 screenPosition = new Vector3((boundingBox[2] - objPosX[i]) / (boundingBox[2] - boundingBox[0]) * Screen.currentResolution.width, 
-//				                                     Screen.currentResolution.height - (objPosY[i] - boundingBox[1]) / (boundingBox[3] - boundingBox[1]) * Screen.currentResolution.height, 
-//				                                     levelDepth); 
+
+				Mesh m;
+				print("unity contours " + unityContourPts[i].size);
+				for (int j=0; j<unityContourPts[i].size; j++)
+					print ("contour x: " + unityContourPts[i].posX[j]);
+				//unityContourPts[i].s
+				print ("center x: " + objPosX[i]);
+
+				CreateMesh meshScript = gameObject.GetComponent<CreateMesh>();
+				m = meshScript.extrudeMesh(unityContourPts[i].posX, unityContourPts[i].posY, unityContourPts[i].size, new Vector3(objPosX[i], objPosY[i], levelDepth));
+
+				//GameObject platform = new GameObject();
+				//platform = Instantiate (basic_platform) as GameObject;
+				//platform.GetComponent<MeshFilter>().mesh = m;
+
+
+				GameObject go = new GameObject();
+				go.AddComponent(typeof(MeshRenderer));
+				go.GetComponent<MeshRenderer>().material = blockMaterial;
+				MeshFilter filter = go.AddComponent(typeof(MeshFilter)) as MeshFilter;
+				go.renderer.material.color = new Color(objBGR[3*i+2]/255, objBGR[3*i+1]/255, objBGR[3*i]/255);
+				filter.mesh = m;
+				go.AddComponent (typeof(MeshCollider));
+				go.GetComponent<MeshCollider>().sharedMesh = m;
+				go.layer = LayerMask.NameToLayer ("Collisions");
+				Vector3 oldPosition = filter.transform.position;
+
+				Vector3 screenPosition = new Vector3((boundingBox[2] - objPosX[i]) / (boundingBox[2] - boundingBox[0]) * Screen.currentResolution.width, 
+				                                     Screen.currentResolution.height - (objPosY[i] - boundingBox[1]) / (boundingBox[3] - boundingBox[1]) * Screen.currentResolution.height, 
+				                                     player.transform.position.zlevelDepth); 
 //				//print ("previous: " + (Screen.currentResolution.width - (objPosX[i] - boundingBox[0]) / (boundingBox[2] - boundingBox[0]) * Screen.currentResolution.width));
 //				//print ("now: " + ((boundingBox[2] - objPosX[i]) / (boundingBox[2] - boundingBox[0]) * Screen.currentResolution.width));
-//				filter.transform.position = mainCam.ScreenToWorldPoint(screenPosition);
-//				filter.transform.localPosition = new Vector3(filter.transform.position.x, 12, filter.transform.position.z);
-//				filter.transform.localScale = new Vector3(objWidth[i] / (boundingBox[2] - boundingBox[0]) * 160, objHeight[i] / (boundingBox[3] - boundingBox[1]) * 120, 20);
-//
-//
-//			}
+				go.transform.position = mainCam.ScreenToWorldPoint(screenPosition);
+				go.transform.position = new Vector3(go.transform.position.x, go.transform.position.y, player.transform.position.z);
+				//filter.transform.localPosition = new Vector3(filter.transform.position.x, 12, filter.transform.position.z);
+				//go.transform.localScale = new Vector3(objWidth[i] / (boundingBox[2] - boundingBox[0]) * 160, objHeight[i] / (boundingBox[3] - boundingBox[1]) * 120, 20);
+				go.transform.localScale = new Vector3(0.3f, 0.3f, 1.0f);
 
+				//Array.Reverse (cloneMesh.triangles);
+				//cloneMesh.triangles.
+				/*for(int j=0; j<cloneMesh.normals.Length; j++){
+					cloneMesh.normals[j] = (-1* cloneMesh.normals[j]); 
+				}*/
+				/*for(int k=0; k<filter.mesh.vertices.Length; k++)
+				{
+					filter.mesh.vertices[k] -= go.transform.position;
+					filter.mesh.vertices[k].x *= go.transform.localScale.x;
+					filter.mesh.vertices[k].y *= go.transform.localScale.y;
+					filter.mesh.vertices[k].z *= go.transform.localScale.z;
+				}
 
-
+			}
+			}*/
 		}
-		
+			if(scanStart && !scanned){
+				scanned = animateScan();
+			}
+	}
+
+	bool animateScan()
+	{
+		return true;
+		GUITexture whiteScreen = GameObject.FindGameObjectWithTag ("whitescreen").GetComponent<GUITexture>();
+		GUITexture horizScan = GameObject.FindGameObjectWithTag ("horizscan").GetComponent<GUITexture>();
+		GUITexture vertScan = GameObject.FindGameObjectWithTag ("vertscan").GetComponent<GUITexture>();
+		if (horizScan.pixelInset.y > 0){
+			horizScan.pixelInset = new Rect(horizScan.pixelInset.x, horizScan.pixelInset.y - 4, horizScan.pixelInset.width, horizScan.pixelInset.height);
+		}
+		else if(vertScan.pixelInset.x < 1500){
+			vertScan.pixelInset = new Rect(vertScan.pixelInset.x + 10, vertScan.pixelInset.y, vertScan.pixelInset.width, vertScan.pixelInset.height);
+		}
+		else{
+			vertScan.pixelInset = new Rect(vertScan.pixelInset.x + 20, vertScan.pixelInset.y, vertScan.pixelInset.width, vertScan.pixelInset.height);
+			horizScan.pixelInset = new Rect(horizScan.pixelInset.x+20, horizScan.pixelInset.y, horizScan.pixelInset.width, horizScan.pixelInset.height);
+			whiteScreen.pixelInset = new Rect(whiteScreen.pixelInset.x+20, whiteScreen.pixelInset.y, whiteScreen.pixelInset.width, whiteScreen.pixelInset.height);
+		}
+		return (horizScan.pixelInset.x > 5000);
 	}
 }

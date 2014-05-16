@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+//using System;
+//using System.Runtime.InteropServices;
 
 public class BackupCollision : MonoBehaviour {
 	public int life = 3;
@@ -8,8 +10,14 @@ public class BackupCollision : MonoBehaviour {
 	public AudioClip deathclip;
 	public AudioSource fireCatchas;
 	public AudioClip fireCatchclip;
+	trial globalObj;
 	// Use this for initialization
 	void Start () {
+		GameObject g = GameObject.Find ("Global Object");
+		globalObj = g.GetComponent<trial> ();
+		if (globalObj == null) {
+			Debug.Log("NULL Reference\n");
+				}
 		deathas = (AudioSource)gameObject.AddComponent<AudioSource> ();
 		deathas.clip = deathclip;
 		fireCatchas = (AudioSource)gameObject.AddComponent<AudioSource> ();
@@ -26,6 +34,13 @@ public class BackupCollision : MonoBehaviour {
 	void OnTriggerEnter(Collider collider)
 	{
 		Debug.Log (collider.name);
+		if (collider.tag != "portal") {
+			if (globalObj == null){
+				Debug.Log("ERROR: globalObj IS NULL\n");
+			}
+			else
+				globalObj.transferred = 0;
+		}
 		if (collider.tag == "fire" || collider.tag == "water" || collider.tag == "gear") 
 		{
 

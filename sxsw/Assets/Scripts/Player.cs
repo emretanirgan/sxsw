@@ -15,12 +15,13 @@ public class Player : MonoBehaviour {
 	public float Gravity = 21f;	 //downward force
 	public float TerminalVelocity = 20f;	//max downward speed
 	public float JumpSpeed = 6f;
+	public float springJumpSpeed = 300f;
 	public float MoveSpeed = 10f;
 	public float rotateSpeed = 5f;
 	public float dodgeTime = 1.5f;
 	public float dodgeSpeed = 50f;
 	
-	public AudioSource dodgeSound, footstepSound, deathMeow, popUpMeow; 
+	public AudioSource dodgeSound, footstepSound, deathMeow, popUpMeow, jumpOnTop; 
 	
 	public Vector3 MoveVector {get; set;}
 	private Vector3 lastNonZeroMoveVector;
@@ -72,7 +73,7 @@ public class Player : MonoBehaviour {
 //			this.enabled = false;		
 		}
 		
-		lastNonZeroMoveVector = Vector3.right;
+		lastNonZeroMoveVector = (thisPlayer == Players.P1) ?  Vector3.right : Vector3.left;
 		startZ = transform.position.z;
 		
 	}
@@ -80,9 +81,10 @@ public class Player : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		// Popping back up while stationary changes z pos for some reason. Hack Fix !
-		if(transform.position.z != startZ)
+		if(Mathf.RoundToInt(transform.position.z) != Mathf.Round(startZ))
 		{
-			Debug.Log("resetting z");
+//			Debug.Log("resetting z");
+//			MoveVector = Vector3.right;
 			transform.position = new Vector3(transform.position.x, transform.position.y, startZ);
 		}
 	
@@ -112,6 +114,7 @@ public class Player : MonoBehaviour {
 		float horInp = Mathf.Abs(Input.GetAxis(joystickHorizontalAxis)) > deadZone ? Input.GetAxis(joystickHorizontalAxis) : Input.GetAxis(horizontalAxis);
 		if(Mathf.Abs(horInp) > deadZone) 
 		{
+//			Debug.Log("horINp = " + horInp);
 			MoveVector += new Vector3(horInp,0,0);
 			
 			if(Input.GetButtonDown(dodgeButton) || Input.GetButtonDown(joystickDodgeButton))
@@ -138,41 +141,19 @@ public class Player : MonoBehaviour {
 	
 	void processMovement()
 	{	
-		
-//		if(anim.GetCurrentAnimatorStateInfo(0).IsName("Jumping"))
-//		{
-//			// if we are near ground, go to landing state
-//			if(Physics.Raycast(transform.position, Vector3.down, landingDistance))
-//			{
-////				anim.SetBoo99999999999999999
-//
-//				anim.SetBool("Jumping", false);
-//			
-//			}
-//			
-//			Debug.DrawLine(transform.position, transform.position + (Vector3.down * landingDistance), Color.magenta);
-//
-////			if(controll
-//		}
-
-		
-		
-		//transform moveVector into world-space relative to character rotation		
-//		MoveVector = transform.TransformDirection(MoveVector);
-
 		if(isDodging)
 				MoveVector = dodgeVector;
 		
-		if(MoveVector != Vector3.zero)
+		if(MoveVector.x != 0)
 		{
 			//face correct direction
-//			transform.rotation = Quaternion.LookRotation(MoveVector, transform.up);
-//			transform.eulerAngles = (MoveVector.x > 0)?Vector3.up  * 180:Vector3.zero;
 			transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(MoveVector , Vector3.up), rotateSpeed * Time.deltaTime);
-			lastNonZeroMoveVector = MoveVector;
+			lastNonZeroMoveVector = new Vector3(MoveVector.x, 0, 0);
+			
 		}
 		else
 		{
+			
 			transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(lastNonZeroMoveVector , Vector3.up), rotateSpeed * Time.deltaTime);
 		}
 		
@@ -234,6 +215,33 @@ public class Player : MonoBehaviour {
 		}
 	}
 	
+	
+	public void SpringJump()
+	{
+//		if(CharController.isGrounded){
+			anim.SetBool("Jumping", true);
+			VerticalVelocity = springJumpSpeed;
+//		}	
+		
+		Debug.Log("in spring jump");
+		
+		processMovement();
+	}
+	
+	public void JumpedOnTop()
+	{
+		anim.SetBool("Jumping", true);
+		VerticalVelocity = JumpSpeed;
+		
+		if(!jumpOnTop.isPlaying)
+			jumpOnTop.Play();
+		
+		processMovement();
+	
+	}
+	
+//	public void S
+	
 	void OnTriggerEnter(Collider other) {
 		Debug.Log(other.gameObject.name);
 //		Destroy(other.gameObject);
@@ -241,36 +249,20 @@ public class Player : MonoBehaviour {
 	
 	public void Dead()
 	{
-		Debug.Log("dead");
-		
 		if(isDead)
-			return;
-			
+			return;		
+		
+		Toolbox.Instance.PlayerWon(thisPlayer == Players.P1 ? Players.P2 : Players.P1);
+				
+		
+		
 		isDead = true;
 		
 		if(!deathMeow.isPlaying)
 			deathMeow.Play();
 			
 		Shrink();
-		StartCoroutine(WaitAndPopBackUp(5f));
-//		TweenParms parms = new TweenParms().Prop("position", new Vector3(10,20,30)).Prop("rotation", new Vector3(0,720,0)).Prop("localScale", new Vector3(4,4,4)).Ease(EaseType.EaseOutBounce).Delay(1);
-//		HOTween.To(gameObject.transform, 1, parms );
-		
-//		Sequence mySequence = new Sequence(new SequenceParms().Loops(3,LoopType.Yoyo));
-//		
-//		// Append adds the given Tweener or Sequence to the right of the sequence (time-wise)
-//		mySequence.Append(HOTween.To(gameObject.transform, 1, new TweenParms().Prop("position", new Vector3(10,20,30)).Prop("rotation", new Vector3(0,720,0)).Prop("localScale", new Vector3(4,4,4)).Ease(EaseType.EaseOutBounce)));
-//		// Prepend adds the given Tweener or Sequence to the left of the sequence (time-wise),
-//		// moving all previous Tweeners/Sequences to the right.
-//		mySequence.Prepend(HOTween.To(gameObject.transform, 1, new TweenParms().Prop("position", new Vector3(10,20,30)).Prop("rotation", new Vector3(0,720,0)).Prop("localScale", new Vector3(4,4,4)).Ease(EaseType.EaseInElastic)));
-//		// Insert just places the given Tweener or Sequence at the desired point in time.
-//		mySequence.Insert(1, HOTween.To(gameObject.transform, 1, new TweenParms().Prop("position", new Vector3(10,20,30)).Prop("rotation", new Vector3(0,720,0)).Prop("localScale", new Vector3(4,4,4)).Ease(EaseType.EaseOutQuad)));
-//		
-//		mySequence.Play();
-
-		
-
-		
+		StartCoroutine(WaitAndPopBackUp(3f));		
 	}
 	
 	void Shrink()
@@ -291,7 +283,7 @@ public class Player : MonoBehaviour {
 	{
 		// Make charcter jump
 		jump();
-		lastNonZeroMoveVector = Vector3.right;
+		lastNonZeroMoveVector = (thisPlayer == Players.P1) ?  Vector3.right : Vector3.left;
 		processMovement();
 		
 		if(!popUpMeow.isPlaying)
@@ -334,5 +326,15 @@ public class Player : MonoBehaviour {
 		if(CharController.isGrounded)
 			footstepSound.Play();
 	
+	}
+	
+	void EnableTrail()
+	{
+		gameObject.GetComponent<TrailRenderer>().enabled = true;	
+	}
+	
+	void DisableTrail()
+	{
+		gameObject.GetComponent<TrailRenderer>().enabled = false;	
 	}
 }

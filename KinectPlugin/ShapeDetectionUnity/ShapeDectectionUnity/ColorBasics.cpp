@@ -348,7 +348,7 @@ void CColorBasics::ProcessColorDepth()
 }
 
 RNG rng(12345);
-void CColorBasics::ShapeBoundingbox(float* objPosX, float* objPosY, float* objHeight, float* objWidth, int& shapeNum, 
+void CColorBasics::ShapeBoundingbox(float* objPosX, float* objPosY, float* objHeight, float* objWidth, float* objAngle, int& shapeNum, 
 	float* boundingBox, float* objHue, ContourPoints* contourPts)
 {
 	//int thresh = 80;
@@ -404,22 +404,44 @@ void CColorBasics::ShapeBoundingbox(float* objPosX, float* objPosY, float* objHe
 			boundingBox[3] = boundRect[i].br().y;
 		}
 
+	
 
 		if(radius[i] > minRadius && radius[i] < maxRadius){//all the actual objs we need
 			
-			objPosX[shapeNum] = center[i].x;
+			RotatedRect minRect = minAreaRect(Mat(contours_poly[i]));
+			Point2f rect_points[4];
+			minRect.points(rect_points);
+
+			/*objPosX[shapeNum] = center[i].x;
 			objPosY[shapeNum] = center[i].y;
 			objHeight[shapeNum] = boundRect[i].height;
-			objWidth[shapeNum] = boundRect[i].width;
+			objWidth[shapeNum] = boundRect[i].width;*/
 
-			for(int k = 0; k < contours_poly[i].size() && k < POINTNUM; k++)
+			objPosX[shapeNum] = minRect.center.x;
+			objPosY[shapeNum] = minRect.center.y;
+			objHeight[shapeNum] = minRect.size.height;
+			objWidth[shapeNum] = minRect.size.width;
+			objAngle[shapeNum] = minRect.angle;
+
+			
+			
+
+			/*for(int k = 0; k < contours_poly[i].size() && k < POINTNUM; k++)
 			{
 				contourPts[shapeNum].posX[k] = contours_poly[i][k].x;
 				contourPts[shapeNum].posY[k] = contours_poly[i][k].y;
 			}
 			
-			contourPts[shapeNum].size = contours_poly[i].size();
+			contourPts[shapeNum].size = contours_poly[i].size();*/
+
+			for(int k = 0; k < 4 && k < POINTNUM; k++)
+			{
+				contourPts[shapeNum].posX[k] = rect_points[4].x;
+				contourPts[shapeNum].posY[k] = rect_points[4].y;
+			}
 			
+			contourPts[shapeNum].size = 4;
+
 			/*
 			// Create a mask for each contour to mask out that region from image.
 			Mat mask = Mat::zeros(img->nSize, CV_8UC1);
@@ -444,6 +466,10 @@ void CColorBasics::ShapeBoundingbox(float* objPosX, float* objPosY, float* objHe
 			objHue[shapeNum*3+2] = color[2];
 
 			shapeNum++;
+
+			for( int j = 0; j < 4; j++ ){
+				 line( drawing, rect_points[j], rect_points[(j+1)%4], color, 1, 8 );
+			}
 
 			drawContours( drawing, contours_poly, i, color, 1, 8, vector<Vec4i>(), 0, Point() );
 			rectangle( drawing, boundRect[i].tl(), boundRect[i].br(), color, 2, 8, 0 );
