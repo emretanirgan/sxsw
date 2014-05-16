@@ -2,7 +2,7 @@
 using System.Collections;
 //using System;
 //using System.Runtime.InteropServices;
-
+/*
 public class Portal : MonoBehaviour {
 	public GameObject[] PortalList;
 	public GameObject PortalTarget;
@@ -12,11 +12,11 @@ public class Portal : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 	
-		/*GameObject g = GameObject.Find ("Global Object");
+		GameObject g = GameObject.Find ("Global Object");
 		globalObj = g.GetComponent<trial> ();
 		if (globalObj == null){
 			Debug.Log("ERROR: globalObj IS NULL\n");
-		}*/
+		}
 		
 		PortalList = GameObject.FindGameObjectsWithTag ("portal");
 		for (int j = 0; j<PortalList.Length; j++) {
@@ -50,3 +50,4 @@ public class Portal : MonoBehaviour {
 		}
 	}
 }
+*/
