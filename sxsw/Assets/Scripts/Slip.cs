@@ -13,17 +13,17 @@ public class Slip : MonoBehaviour {
 	bool onSlipery = false;
 
 	Vector3 startPos;
-	trial globalObj;
+	//trial globalObj;
 	// Use this for initialization
 	void Start () {
 		//spas = (AudioSource)gameObject.AddComponent<AudioSource> ();
 		//spas.clip = spclip;
 		startPos = gameObject.transform.position;
-		GameObject g = GameObject.Find ("Global Object");
+		/*GameObject g = GameObject.Find ("Global Object");
 		globalObj = g.GetComponent<trial> ();
 		if (globalObj == null){
 			Debug.Log("ERROR: globalObj IS NULL\n");
-		}
+		}*/
 	}
 	
 	// Update is called once per frame

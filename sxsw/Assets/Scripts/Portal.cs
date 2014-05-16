@@ -7,16 +7,16 @@ public class Portal : MonoBehaviour {
 	public GameObject[] PortalList;
 	public GameObject PortalTarget;
 	public GameObject boomParticle;
-	trial globalObj;
+	//trial globalObj;
 	int i = 0, current;
 	// Use this for initialization
 	void Start () {
 	
-		GameObject g = GameObject.Find ("Global Object");
+		/*GameObject g = GameObject.Find ("Global Object");
 		globalObj = g.GetComponent<trial> ();
 		if (globalObj == null){
 			Debug.Log("ERROR: globalObj IS NULL\n");
-		}
+		}*/
 		
 		PortalList = GameObject.FindGameObjectsWithTag ("portal");
 		for (int j = 0; j<PortalList.Length; j++) {
