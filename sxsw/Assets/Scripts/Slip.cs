@@ -17,6 +17,7 @@ public class Slip : MonoBehaviour {
 	//trial globalObj;
 	// Use this for initialization
 	void Start () {
+		int a = 0;
 		//spas = (AudioSource)gameObject.AddComponent<AudioSource> ();
 		//spas.clip = spclip;
 		startPos = gameObject.transform.position;

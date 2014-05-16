@@ -17,6 +17,7 @@ public class Portal : MonoBehaviour {
 		if (globalObj == null){
 			Debug.Log("ERROR: globalObj IS NULL\n");
 		}
+		int a = 0;
 		
 		PortalList = GameObject.FindGameObjectsWithTag ("portal");
 		for (int j = 0; j<PortalList.Length; j++) {
