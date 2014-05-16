@@ -65,13 +65,23 @@ public class LevelSetup : MonoBehaviour {
 	public GameObject spring_platform;
 	float levelDepth;
 
-
+	public float hSliderValue = 0.0F;
+	//public string stringToEdit = "Enter threshold value here";
+	//calibration stuff
+	void OnGUI() {
+		//stringToEdit = GUI.TextField(new Rect(10, 10, 200, 20), stringToEdit, 25);
+		hSliderValue = GUI.HorizontalSlider(new Rect(25, 25, 100, 30), hSliderValue, 0.0F, 255.0F);
+	}
 
 	public AudioSource scanAs;
 	public AudioClip sacnClip;
 
 	// Use this for initialization
 	void Start () {
+
+
+
+
 		scanAs = (AudioSource)gameObject.AddComponent<AudioSource>();
 		scanAs.clip = sacnClip;
 		objPosX = new float[100];
@@ -81,6 +91,8 @@ public class LevelSetup : MonoBehaviour {
 		objBGR = new float[100];
 		objAngle = new float[100];
 		boundingBox = new float[4];
+
+
 
 
 		unityContourPts = new UnityContourPoints[100];
@@ -118,6 +130,8 @@ public class LevelSetup : MonoBehaviour {
 
 		if(Input.GetButtonDown("scan") && !scanned)
 		{
+			threshold = (int)hSliderValue;
+
 			scanStart = true;
 			//scanned = animateScan();
 			//scanned = true;
