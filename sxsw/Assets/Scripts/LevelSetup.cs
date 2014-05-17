@@ -9,6 +9,9 @@ public class LevelSetup : MonoBehaviour {
 	public const int posSize = 1000;
 	public Material blockMaterial;
 
+	public GameObject spawnPos1, spawnPos2;
+	public GameObject cat1, cat2;
+
 	//the data to pass to dll
 	[StructLayout(LayoutKind.Sequential)]
 	public struct UnityContourPoints
@@ -189,10 +192,13 @@ public class LevelSetup : MonoBehaviour {
 			if(startingPlatforms.Length >= 1)
 			{
 				print ("instantiating");
-				player = Instantiate(player) as GameObject;
+//				player = Instantiate(player) as GameObject;
+
+				player = Instantiate(cat1, spawnPos1.transform.position, Quaternion.identity) as GameObject;
+				Instantiate(cat2, spawnPos2.transform.position, Quaternion.identity);
 				//Vector3 startingPos = startingPlatforms[0].transform.position + new Vector3(0, startingPlatforms[0].transform.localScale.y + player.transform.localScale.y * 0.5f * player.GetComponent<CharacterController>().height, 0);
-				Vector3 startingPos =  startingPlatforms[0].transform.position + new Vector3(0, 5, 0);
-				player.transform.position = startingPos;
+//				Vector3 startingPos =  startingPlatforms[0].transform.position + new Vector3(0, 5, 0);
+//				player.transform.position = startingPos;
 			}
 			else
 			{

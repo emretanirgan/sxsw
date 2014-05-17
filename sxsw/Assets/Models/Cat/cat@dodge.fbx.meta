@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 88e26362fd61e7b48b7ea132c2be7315
 ModelImporter:
-  serializedVersion: 16
+  serializedVersion: 15
   fileIDToRecycleName:
     100000: cat:cat_geo
     100002: cat:chest_ctrl
@@ -194,7 +194,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: .893749714
+      - time: .770981848
         functionName: DisableTrail
         data: 
         objectReferenceParameter: {instanceID: 0}
@@ -887,5 +887,4 @@ ModelImporter:
     rootMotionBoneName: 
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 3
-  additionalBone: 0
   userData: 

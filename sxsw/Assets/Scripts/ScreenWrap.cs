@@ -63,6 +63,7 @@ public class ScreenWrap : MonoBehaviour {
 			newPosition.x = -newPosition.x;
 			
 			isWrappingX = true;
+			GetComponent<TrailRenderer>().enabled  = false;
 		}
 		
 		if (!isWrappingY && (/*viewportPosition.y > 1 || */ viewportPosition.y < 0))
@@ -71,6 +72,7 @@ public class ScreenWrap : MonoBehaviour {
 			newPosition.y = -newPosition.y;
 			
 			isWrappingY = true;
+			GetComponent<TrailRenderer>().enabled  = false;
 		}
 		
 		transform.position = newPosition;

@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 0013b82dabeea15498fca9ce7e31cb5f
 ModelImporter:
-  serializedVersion: 16
+  serializedVersion: 15
   fileIDToRecycleName:
     100000: cat:cat_geo
     100002: cat:chest_ctrl
@@ -816,7 +816,7 @@ ModelImporter:
       transformModified: 1
     - name: cat:R_elbow_j
       position: {x: .00560282636, y: .000410582754, z: .00077111664}
-      rotation: {x: -.00392565271, y: -.0795827284, z: .0735524818, w: .994103193}
+      rotation: {x: -.00392565317, y: -.0795827359, z: .0735524893, w: .994103253}
       scale: {x: .999999881, y: .999999762, z: .999999642}
       transformModified: 1
     - name: cat:R_wrist_j
@@ -826,7 +826,7 @@ ModelImporter:
       transformModified: 1
     - name: cat:R_palm_j
       position: {x: .00193342951, y: -.000122874946, z: .000170142375}
-      rotation: {x: -.110157028, y: -.034043286, z: .272599757, w: .955194116}
+      rotation: {x: -.110157035, y: -.0340432897, z: .272599787, w: .955194175}
       scale: {x: 1.00000024, y: 1.00000024, z: 1.00000012}
       transformModified: 1
     - name: cat:R_fingers_j
@@ -856,7 +856,7 @@ ModelImporter:
       transformModified: 1
     - name: cat:L_ankle_j
       position: {x: -.00529990206, y: .000393461523, z: -.000906927453}
-      rotation: {x: .591338634, y: .38770926, z: -.379161596, w: .596855581}
+      rotation: {x: .591338694, y: .38770929, z: -.379161626, w: .59685564}
       scale: {x: 1, y: 1.00000048, z: 1.00000048}
       transformModified: 1
     - name: cat:L_ball_j
@@ -876,12 +876,12 @@ ModelImporter:
       transformModified: 1
     - name: cat:R_knee_j
       position: {x: 2.0916251e-09, y: -2.5426683e-09, z: .00706816139}
-      rotation: {x: .00361272134, y: .145781785, z: 7.4112766e-05, w: .989310145}
+      rotation: {x: .00361272157, y: .1457818, z: 7.41127733e-05, w: .989310205}
       scale: {x: .999999881, y: .999999821, z: .999999404}
       transformModified: 1
     - name: cat:R_ankle_j
       position: {x: -2.0139938e-05, y: -2.836872e-07, z: .00539514842}
-      rotation: {x: .0390547849, y: -.610662341, z: -.0207626689, w: .790654838}
+      rotation: {x: .0390547886, y: -.610662401, z: -.0207626708, w: .790654898}
       scale: {x: 1.00000024, y: .999999583, z: .999999702}
       transformModified: 1
     - name: cat:R_ball_j
@@ -929,5 +929,4 @@ ModelImporter:
     rootMotionBoneName: 
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 3
-  additionalBone: 0
   userData: 
