@@ -68,6 +68,9 @@ public class LevelSetup : MonoBehaviour {
 	public GameObject spring_platform;
 	float levelDepth;
 
+	float timer = 0;
+	float videoTime;
+
 	public float hSliderValue = 0.0F;
 	//public string stringToEdit = "Enter threshold value here";
 	//calibration stuff
@@ -136,6 +139,7 @@ public class LevelSetup : MonoBehaviour {
 		if(Input.GetButtonDown("scan") && !scanned)
 		{
 			threshold = (int)hSliderValue;
+			videoTime = Time.time + 6;
 
 			scanStart = true;
 			//scanned = animateScan();
@@ -274,21 +278,15 @@ public class LevelSetup : MonoBehaviour {
 
 	bool animateScan()
 	{
-		return true;
-		GUITexture whiteScreen = GameObject.FindGameObjectWithTag ("whitescreen").GetComponent<GUITexture>();
-		GUITexture horizScan = GameObject.FindGameObjectWithTag ("horizscan").GetComponent<GUITexture>();
-		GUITexture vertScan = GameObject.FindGameObjectWithTag ("vertscan").GetComponent<GUITexture>();
-		if (horizScan.pixelInset.y > 0){
-			horizScan.pixelInset = new Rect(horizScan.pixelInset.x, horizScan.pixelInset.y - 4, horizScan.pixelInset.width, horizScan.pixelInset.height);
+		scanStart = false;
+		GameObject.FindGameObjectWithTag("scanPlane").GetComponent<ScanVideoScript>().playScanAnim();
+		timer += Time.deltaTime;
+		if(Time.time > videoTime){
+			return true;
 		}
-		else if(vertScan.pixelInset.x < 1500){
-			vertScan.pixelInset = new Rect(vertScan.pixelInset.x + 10, vertScan.pixelInset.y, vertScan.pixelInset.width, vertScan.pixelInset.height);
+		else {
+			return false;
 		}
-		else{
-			vertScan.pixelInset = new Rect(vertScan.pixelInset.x + 20, vertScan.pixelInset.y, vertScan.pixelInset.width, vertScan.pixelInset.height);
-			horizScan.pixelInset = new Rect(horizScan.pixelInset.x+20, horizScan.pixelInset.y, horizScan.pixelInset.width, horizScan.pixelInset.height);
-			whiteScreen.pixelInset = new Rect(whiteScreen.pixelInset.x+20, whiteScreen.pixelInset.y, whiteScreen.pixelInset.width, whiteScreen.pixelInset.height);
-		}
-		return (horizScan.pixelInset.x > 5000);
+
 	}
 }
