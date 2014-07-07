@@ -8,7 +8,7 @@ using System.Collections.Generic;
 public class Toolbox : Singleton<Toolbox> {
 	protected Toolbox () {} // guarantee this will be always a singleton only - can't use the constructor!
 	
-	public Background background;
+	public BackgroundMusic bgMusic;
 	public PlayVideosInFolder videoBackground;
 	
 	public GameObject p1, p2;
@@ -25,7 +25,7 @@ public class Toolbox : Singleton<Toolbox> {
 	private int p1Wins = 0, p2Wins = 0;
 	
 	void Awake () {
-	
+		Time.captureFramerate = 30;
 	}
 	
 	
@@ -77,7 +77,9 @@ public class Toolbox : Singleton<Toolbox> {
 				playerWonDisabled = true;  
 				winnerTitle.renderer.material.mainTexture = greenWinner;
 				winnerTitle.SetActive(true);
-				StartCoroutine(Popup(winnerTitle, winnerTitle.GetComponent<AudioSource>(), false)); 		    	
+				StartCoroutine(Popup(winnerTitle, winnerTitle.GetComponent<AudioSource>(), false)); 
+				
+				StartCoroutine(ReloadLevel());		    	
 			}		    
 			else
 			{
@@ -103,6 +105,8 @@ public class Toolbox : Singleton<Toolbox> {
 				winnerTitle.SetActive(true);
 				StartCoroutine(Popup(winnerTitle, winnerTitle.GetComponent<AudioSource>(), false)); 
 //				StartCoroutine(Popup(wonAllRounds, applause, false)); 
+
+				StartCoroutine(ReloadLevel());		    	
 				
 			}
 			else
@@ -117,7 +121,15 @@ public class Toolbox : Singleton<Toolbox> {
 		
 		if(p1Wins < 3 && p2Wins < 3)
 			Invoke("EnablePlayerWon", 3f);
+			
 		
+	}
+	
+	IEnumerator ReloadLevel()
+	{
+		yield return new WaitForSeconds(5f);
+		Application.LoadLevel(Application.loadedLevel);
+	
 	}
 	
 

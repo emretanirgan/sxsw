@@ -27,7 +27,7 @@ int main()
 	static CColorBasics colorKinect;
 	colorKinect.maxRadius = 120;
 	colorKinect.minRadius = 40;
-	colorKinect.threshhold = 180;
+	colorKinect.threshhold = 74;
 	colorKinect.debugMode = true;
 	colorKinect.CreateFirstConnected();
 	int shapeNum = 0;
@@ -37,7 +37,9 @@ int main()
 		if ( WAIT_OBJECT_0 == WaitForSingleObject(colorKinect.m_hNextColorFrameEvent, 0) )
 		{
 			colorKinect.ProcessColor();			
-			colorKinect.ShapeBoundingbox(objPosX, objPosY, objHeight, objWidth, objAngle, shapeNum, boudingBox, objHue, contourPts);
+			//colorKinect.ShapeBoundingbox(objPosX, objPosY, objHeight, objWidth, objAngle, shapeNum, boudingBox, objHue, contourPts);
+			colorKinect.ShapeBoundingboxWithArea(objPosX, objPosY, objHeight, objWidth, objAngle, shapeNum, boudingBox, objHue, 1636, 2300);
+
 			break;
 		}
 	}

@@ -6,7 +6,7 @@ public class ScreenWrap : MonoBehaviour {
 	Renderer[] renderers;
 	
 	bool isWrappingX = false;
-	bool isWrappingY = false;
+	bool isWrappingY = true; // for spawning offscreen
 	
 	void Start()
 	{
@@ -18,7 +18,7 @@ public class ScreenWrap : MonoBehaviour {
 	{
 		foreach(var renderer in renderers)
 		{
-			// If at least one render is visible, return true
+			// If at least one render is visible, return true. For it to work in editor, do not have the scene view open
 			if(renderer.isVisible)
 			{
 				return true;
@@ -63,16 +63,16 @@ public class ScreenWrap : MonoBehaviour {
 			newPosition.x = -newPosition.x;
 			
 			isWrappingX = true;
-			GetComponent<TrailRenderer>().enabled  = false;
+			GetComponentInChildren<TrailRenderer>().enabled  = false;
 		}
 		
-		if (!isWrappingY && (/*viewportPosition.y > 1 || */ viewportPosition.y < 0))
+		if (!isWrappingY && (viewportPosition.y > 1 || viewportPosition.y < 0))
 		{
 //			Debug.Log("wrapping around on y");
 			newPosition.y = -newPosition.y;
 			
 			isWrappingY = true;
-			GetComponent<TrailRenderer>().enabled  = false;
+			GetComponentInChildren<TrailRenderer>().enabled  = false;
 		}
 		
 		transform.position = newPosition;

@@ -83,6 +83,42 @@ extern "C"
 		return shapeNum;
 	}
 
+	int EXPORT_API detectShapeWithArea(float minArea, float maxArea, int threshold,
+		float* objPosX, float* objPosY, float* objHeight, float* objWidth, float* objAngle, float* boundingBox, float* objHue,
+		bool debugMode)
+	{
+		//colorKinect.maxRadius = maxRadius;
+		//colorKinect.minRadius = minRadius;
+		colorKinect.threshhold = threshold;
+		colorKinect.debugMode = debugMode;
+		colorKinect.CreateFirstConnected();
+		int shapeNum = 0;
+
+
+		ContourPoints* contourPts = new ContourPoints[100];
+
+		//copytoC(unityContourPt, contourPt, objSize);
+
+		int countTimes = 0;
+		while (1){
+			if (countTimes++ == 20);
+			//				return shapeNum;
+			Sleep(100);
+			if (WAIT_OBJECT_0 == WaitForSingleObject(colorKinect.m_hNextColorFrameEvent, 0))
+			{
+				colorKinect.ProcessColor();
+				colorKinect.ShapeBoundingboxWithArea(objPosX, objPosY, objHeight, objWidth, objAngle, shapeNum, boundingBox, objHue, minArea, maxArea);
+				break;
+			}
+		}
+
+		//copytoUnity(contourPts, unityContourPts, shapeNum);
+
+		//shapeNum = 10;
+
+		return shapeNum;
+	}
+
 
 	void EXPORT_API testStruct(UnityContourPoints* unityContourPts)
 	{ 

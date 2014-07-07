@@ -5,15 +5,11 @@ public class NewSpring : MonoBehaviour
 {
 	private Player lastPlayerToTouch;
 	
-	public AudioSource spas;
-	public AudioClip spclip;
-	bool collide_with_player = false;
+
 	Vector3 start_pos;
 	// Use this for initialization
 	void Start () {
-		spas = (AudioSource)gameObject.AddComponent<AudioSource> ();
-		spas.clip = spclip;
-		start_pos = gameObject.transform.position;
+
 	}
 	
 	// Update is called once per frame
@@ -37,7 +33,11 @@ public class NewSpring : MonoBehaviour
 		{
 			Debug.Log("finding player script");
 		
-		    Player collidedPlayer = collider.transform.parent.GetComponent<Player>();
+		    LegTrigger legTrigger = collider.GetComponent<LegTrigger>();
+		    
+			Player collidedPlayer = null;
+		    if(legTrigger != null)
+				collidedPlayer = legTrigger.thisPlayer;
 	
 			if(null != collidedPlayer)
 			{

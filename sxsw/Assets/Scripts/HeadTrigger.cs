@@ -4,15 +4,17 @@ using System.Collections;
 
 public class HeadTrigger : MonoBehaviour {
 
-	private Player thisPlayer;
+	public Player thisPlayer;
 
 	// Use this for initialization
 	void Start () 
 	{
-		thisPlayer = transform.parent.GetComponent<Player>();
+//		thisPlayer = transform.parent.GetComponent<Player>();
 	}
 	
-	
+	void OnCollisionEnter(Collision collision) {
+		OnTriggerEnter(collision.collider);
+	}
 	
 	void OnTriggerEnter(Collider other) {
 //		Debug.Log(other.gameObject.name);

@@ -18,9 +18,9 @@ public class BgChangePlatform : BasePlatform {
 		base.OnTriggerEnter (other);
 		
 		//Debug.Log("trigger in BgChangePlatform");
-		if(other.gameObject.layer == LayerMask.NameToLayer("Floor Detector"))
+		if(other.gameObject.layer == LayerMask.NameToLayer("Leg Trigger"))
 		{
-//		   Toolbox.Instance.background.CycleTexture();
+		   Toolbox.Instance.bgMusic.PlayNextMusicClip();
 			Toolbox.Instance.videoBackground.PlayNextVideo();
 		}
 	}

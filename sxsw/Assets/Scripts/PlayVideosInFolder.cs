@@ -57,7 +57,7 @@ public class PlayVideosInFolder : MonoBehaviour
 	
 	void Update()
 	{
-		if(Input.GetKeyDown(KeyCode.V))
+		if(Input.GetKeyDown(KeyCode.N))
 		{
 			PlayNextVideo();		
 		}

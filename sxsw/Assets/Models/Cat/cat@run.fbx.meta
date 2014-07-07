@@ -74,6 +74,7 @@ ModelImporter:
     100136: cat:tail_5_j
     100138: cat:waist_ctrl
     100140: //RootNode
+    100142: cat:DapperCat
     400000: cat:cat_geo
     400002: cat:chest_ctrl
     400004: cat:chest_j
@@ -145,6 +146,7 @@ ModelImporter:
     400136: cat:tail_5_j
     400138: cat:waist_ctrl
     400140: //RootNode
+    400142: cat:DapperCat
     4300000: cat:pants
     4300002: cat:L_shoe
     4300004: cat:R_shoe

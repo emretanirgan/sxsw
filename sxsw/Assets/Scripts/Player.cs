@@ -92,6 +92,10 @@ public class Player : MonoBehaviour {
 		{
 			anim.SetBool("Jumping", false);
 		}
+		else
+		{
+			anim.SetBool("Jumping", true);
+		}
 		
 		checkMovement();
 		HandleActionInput();
@@ -330,11 +334,11 @@ public class Player : MonoBehaviour {
 	
 	void EnableTrail()
 	{
-		gameObject.GetComponent<TrailRenderer>().enabled = true;	
+		gameObject.GetComponentInChildren<TrailRenderer>().enabled = true;	
 	}
 	
 	void DisableTrail()
 	{
-		gameObject.GetComponent<TrailRenderer>().enabled = false;	
+		gameObject.GetComponentInChildren<TrailRenderer>().enabled = false;	
 	}
 }

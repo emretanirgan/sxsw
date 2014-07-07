@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 689d125208d83864fae5aed04aaffa48
 ModelImporter:
-  serializedVersion: 15
+  serializedVersion: 16
   fileIDToRecycleName:
     100000: cat:cat_geo
     100002: cat:chest_ctrl
@@ -74,6 +74,7 @@ ModelImporter:
     100136: cat:tail_5_j
     100138: cat:waist_ctrl
     100140: //RootNode
+    100142: cat:DapperCat
     400000: cat:cat_geo
     400002: cat:chest_ctrl
     400004: cat:chest_j
@@ -145,6 +146,7 @@ ModelImporter:
     400136: cat:tail_5_j
     400138: cat:waist_ctrl
     400140: //RootNode
+    400142: cat:DapperCat
     4300000: cat:pants
     4300002: cat:L_shoe
     4300004: cat:R_shoe
@@ -153,7 +155,7 @@ ModelImporter:
     4300010: cat:head
     4300012: cat:suit
     4300014: cat:tail1
-    7400000: Take 001
+    7400000: jumpIdle
     9500000: //RootNode
     13700000: cat:head
     13700002: cat:L_hand
@@ -177,7 +179,165 @@ ModelImporter:
     animationScaleError: .5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: jumpIdle
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 120
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 1
+      loopBlendPositionXZ: 1
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 0
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 1
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: cat:DapperCat
+        weight: 1
+      - path: cat:DapperCat/cat:cat_geo
+        weight: 0
+      - path: cat:DapperCat/cat:cat_geo/cat:head
+        weight: 0
+      - path: cat:DapperCat/cat:cat_geo/cat:L_hand
+        weight: 0
+      - path: cat:DapperCat/cat:cat_geo/cat:L_shoe
+        weight: 0
+      - path: cat:DapperCat/cat:cat_geo/cat:pants
+        weight: 0
+      - path: cat:DapperCat/cat:cat_geo/cat:R_hand
+        weight: 0
+      - path: cat:DapperCat/cat:cat_geo/cat:R_shoe
+        weight: 0
+      - path: cat:DapperCat/cat:cat_geo/cat:suit
+        weight: 0
+      - path: cat:DapperCat/cat:root_ctrl
+        weight: 0
+      - path: cat:DapperCat/cat:root_ctrl/cat:chest_ctrl
+        weight: 0
+      - path: cat:DapperCat/cat:root_ctrl/cat:chest_ctrl/cat:head_ctrl
+        weight: 0
+      - path: cat:DapperCat/cat:root_ctrl/cat:chest_ctrl/cat:L_shoulder_ctrl
+        weight: 0
+      - path: cat:DapperCat/cat:root_ctrl/cat:chest_ctrl/cat:L_shoulder_FK_ctrl
+        weight: 0
+      - path: cat:DapperCat/cat:root_ctrl/cat:chest_ctrl/cat:R_shoulder_ctrl
+        weight: 0
+      - path: cat:DapperCat/cat:root_ctrl/cat:chest_ctrl/cat:R_shoulder_FK_ctrl
+        weight: 0
+      - path: cat:DapperCat/cat:root_ctrl/cat:L_arm_IK
+        weight: 0
+      - path: cat:DapperCat/cat:root_ctrl/cat:L_arm_IK_PV_ctrl
+        weight: 0
+      - path: cat:DapperCat/cat:root_ctrl/cat:L_foot_IK_ctrl
+        weight: 0
+      - path: cat:DapperCat/cat:root_ctrl/cat:L_foot_IK_ctrl/cat:L_foot_rotation_null
+        weight: 0
+      - path: cat:DapperCat/cat:root_ctrl/cat:L_foot_IK_ctrl/cat:L_toe_ctrl
+        weight: 0
+      - path: cat:DapperCat/cat:root_ctrl/cat:L_leg_IK
+        weight: 0
+      - path: cat:DapperCat/cat:root_ctrl/cat:L_leg_IK_PV_ctrl
+        weight: 0
+      - path: cat:DapperCat/cat:root_ctrl/cat:L_wrist_o
+        weight: 0
+      - path: cat:DapperCat/cat:root_ctrl/cat:L_wrist_o/cat:L_wrist_ctrl
+        weight: 0
+      - path: cat:DapperCat/cat:root_ctrl/cat:L_wrist_o/cat:L_wrist_ctrl/cat:L_arm_IK_null
+        weight: 0
+      - path: cat:DapperCat/cat:root_ctrl/cat:R_arm_IK
+        weight: 0
+      - path: cat:DapperCat/cat:root_ctrl/cat:R_arm_IK_PV_ctrl
+        weight: 0
+      - path: cat:DapperCat/cat:root_ctrl/cat:R_foot_IK_ctrl
+        weight: 0
+      - path: cat:DapperCat/cat:root_ctrl/cat:R_foot_IK_ctrl/cat:R_foot_rotation_null
+        weight: 0
+      - path: cat:DapperCat/cat:root_ctrl/cat:R_foot_IK_ctrl/cat:R_toe_ctrl
+        weight: 0
+      - path: cat:DapperCat/cat:root_ctrl/cat:R_leg_IK
+        weight: 0
+      - path: cat:DapperCat/cat:root_ctrl/cat:R_leg_IK_PV_ctrl
+        weight: 0
+      - path: cat:DapperCat/cat:root_ctrl/cat:R_wrist_o
+        weight: 0
+      - path: cat:DapperCat/cat:root_ctrl/cat:R_wrist_o/cat:R_wrist_ctrl
+        weight: 0
+      - path: cat:DapperCat/cat:root_ctrl/cat:R_wrist_o/cat:R_wrist_ctrl/cat:R_arm_IK_null
+        weight: 0
+      - path: cat:DapperCat/cat:root_ctrl/cat:waist_ctrl
+        weight: 0
+      - path: cat:DapperCat/cat:root_j
+        weight: 1
+      - path: cat:DapperCat/cat:root_j/cat:chest_j
+        weight: 1
+      - path: cat:DapperCat/cat:root_j/cat:chest_j/cat:L_should_j
+        weight: 1
+      - path: cat:DapperCat/cat:root_j/cat:chest_j/cat:L_should_j/cat:L_elbow_j
+        weight: 1
+      - path: cat:DapperCat/cat:root_j/cat:chest_j/cat:L_should_j/cat:L_elbow_j/cat:L_wrist_j
+        weight: 1
+      - path: cat:DapperCat/cat:root_j/cat:chest_j/cat:L_should_j/cat:L_elbow_j/cat:L_wrist_j/cat:L_palm_j
+        weight: 1
+      - path: cat:DapperCat/cat:root_j/cat:chest_j/cat:L_should_j/cat:L_elbow_j/cat:L_wrist_j/cat:L_palm_j/cat:L_fingers_j
+        weight: 1
+      - path: cat:DapperCat/cat:root_j/cat:chest_j/cat:L_should_j/cat:L_elbow_j/cat:L_wrist_j/cat:L_thumb_a_j
+        weight: 1
+      - path: cat:DapperCat/cat:root_j/cat:chest_j/cat:L_should_j/cat:L_elbow_j/cat:L_wrist_j/cat:L_thumb_a_j/cat:L_thumb_b_j
+        weight: 1
+      - path: cat:DapperCat/cat:root_j/cat:chest_j/cat:neck_j
+        weight: 1
+      - path: cat:DapperCat/cat:root_j/cat:chest_j/cat:neck_j/cat:head_j
+        weight: 1
+      - path: cat:DapperCat/cat:root_j/cat:chest_j/cat:R_should_j
+        weight: 1
+      - path: cat:DapperCat/cat:root_j/cat:chest_j/cat:R_should_j/cat:R_elbow_j
+        weight: 1
+      - path: cat:DapperCat/cat:root_j/cat:chest_j/cat:R_should_j/cat:R_elbow_j/cat:R_wrist_j
+        weight: 1
+      - path: cat:DapperCat/cat:root_j/cat:chest_j/cat:R_should_j/cat:R_elbow_j/cat:R_wrist_j/cat:R_palm_j
+        weight: 1
+      - path: cat:DapperCat/cat:root_j/cat:chest_j/cat:R_should_j/cat:R_elbow_j/cat:R_wrist_j/cat:R_palm_j/cat:R_fingers_j
+        weight: 1
+      - path: cat:DapperCat/cat:root_j/cat:chest_j/cat:R_should_j/cat:R_elbow_j/cat:R_wrist_j/cat:R_thumb_a_j
+        weight: 1
+      - path: cat:DapperCat/cat:root_j/cat:chest_j/cat:R_should_j/cat:R_elbow_j/cat:R_wrist_j/cat:R_thumb_a_j/cat:R_thumb_b_j
+        weight: 1
+      - path: cat:DapperCat/cat:root_j/cat:L_hip_j
+        weight: 1
+      - path: cat:DapperCat/cat:root_j/cat:L_hip_j/cat:L_knee_j
+        weight: 1
+      - path: cat:DapperCat/cat:root_j/cat:L_hip_j/cat:L_knee_j/cat:L_ankle_j
+        weight: 1
+      - path: cat:DapperCat/cat:root_j/cat:L_hip_j/cat:L_knee_j/cat:L_ankle_j/cat:L_ball_j
+        weight: 1
+      - path: cat:DapperCat/cat:root_j/cat:L_hip_j/cat:L_knee_j/cat:L_ankle_j/cat:L_ball_j/cat:L_toe_j
+        weight: 1
+      - path: cat:DapperCat/cat:root_j/cat:R_hip_j
+        weight: 1
+      - path: cat:DapperCat/cat:root_j/cat:R_hip_j/cat:R_knee_j
+        weight: 1
+      - path: cat:DapperCat/cat:root_j/cat:R_hip_j/cat:R_knee_j/cat:R_ankle_j
+        weight: 1
+      - path: cat:DapperCat/cat:root_j/cat:R_hip_j/cat:R_knee_j/cat:R_ankle_j/cat:R_ball_j
+        weight: 1
+      - path: cat:DapperCat/cat:root_j/cat:R_hip_j/cat:R_knee_j/cat:R_ankle_j/cat:R_ball_j/cat:R_toe_j
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
     isReadable: 1
   meshes:
     lODScreenPercentages: []
@@ -761,4 +921,5 @@ ModelImporter:
     rootMotionBoneName: 
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 3
+  additionalBone: 0
   userData: 

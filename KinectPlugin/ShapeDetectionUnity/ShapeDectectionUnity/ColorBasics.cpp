@@ -203,6 +203,8 @@ void CColorBasics::ProcessColor()
 		Mat m(img);
 		IplImage iplimg(m);
 
+		imwrite("C:/Users/Kiran/PA Game Studio/SxSW/kinect_Image.jpg", m);
+
 		cvSmooth(img, img, CV_GAUSSIAN,3,3); 
 		IplImage* imgHSV = cvCreateImage(cvGetSize(img), IPL_DEPTH_8U, 3); 
 		cvCvtColor(img, imgHSV, CV_BGR2HSV);
@@ -348,6 +350,8 @@ void CColorBasics::ProcessColorDepth()
 }
 
 RNG rng(12345);
+
+
 void CColorBasics::ShapeBoundingbox(float* objPosX, float* objPosY, float* objHeight, float* objWidth, float* objAngle, int& shapeNum, 
 	float* boundingBox, float* objHue, ContourPoints* contourPts)
 {
@@ -392,9 +396,9 @@ void CColorBasics::ShapeBoundingbox(float* objPosX, float* objPosY, float* objHe
 	 /// Draw polygonal contour + bonding rects + circles
 	Mat drawing = Mat::zeros( threshold_output.size(), CV_8UC3 );
 	bool findBoundingbox = false;
-	for( int i = 0; i< contours.size(); i++ )
+	for (int i = 0; i< contours.size(); i++)
 	{
-		if(radius[i] > 190)
+		if (radius[i] > 190)
 		{
 			findBoundingbox = true;
 			boundingBox[0] = boundRect[i].tl().x;
@@ -404,13 +408,19 @@ void CColorBasics::ShapeBoundingbox(float* objPosX, float* objPosY, float* objHe
 			boundingBox[3] = boundRect[i].br().y;
 		}
 
-	
 
-		if(radius[i] > minRadius && radius[i] < maxRadius){//all the actual objs we need
-			
+
+		if (radius[i] > minRadius && radius[i] < maxRadius)
+		{//all the actual objs we need
+
 			RotatedRect minRect = minAreaRect(Mat(contours_poly[i]));
 			Point2f rect_points[4];
 			minRect.points(rect_points);
+
+
+
+
+
 
 			/*objPosX[shapeNum] = center[i].x;
 			objPosY[shapeNum] = center[i].y;
@@ -423,23 +433,23 @@ void CColorBasics::ShapeBoundingbox(float* objPosX, float* objPosY, float* objHe
 			objWidth[shapeNum] = minRect.size.width;
 			objAngle[shapeNum] = minRect.angle;
 
-			
-			
+
+
 
 			/*for(int k = 0; k < contours_poly[i].size() && k < POINTNUM; k++)
 			{
-				contourPts[shapeNum].posX[k] = contours_poly[i][k].x;
-				contourPts[shapeNum].posY[k] = contours_poly[i][k].y;
+			contourPts[shapeNum].posX[k] = contours_poly[i][k].x;
+			contourPts[shapeNum].posY[k] = contours_poly[i][k].y;
 			}
-			
+
 			contourPts[shapeNum].size = contours_poly[i].size();*/
 
-			for(int k = 0; k < 4 && k < POINTNUM; k++)
+			for (int k = 0; k < 4 && k < POINTNUM; k++)
 			{
 				contourPts[shapeNum].posX[k] = rect_points[4].x;
 				contourPts[shapeNum].posY[k] = rect_points[4].y;
 			}
-			
+
 			contourPts[shapeNum].size = 4;
 
 			/*
@@ -461,31 +471,184 @@ void CColorBasics::ShapeBoundingbox(float* objPosX, float* objPosY, float* objHe
 			Scalar color = avgPixelIntensity;
 			//Scalar color = Scalar( rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255) );
 
-			objHue[shapeNum*3] = color[0];
-			objHue[shapeNum*3+1] = color[1];
-			objHue[shapeNum*3+2] = color[2];
+			objHue[shapeNum * 3] = color[0];
+			objHue[shapeNum * 3 + 1] = color[1];
+			objHue[shapeNum * 3 + 2] = color[2];
 
 			shapeNum++;
 
-			for( int j = 0; j < 4; j++ ){
-				 line( drawing, rect_points[j], rect_points[(j+1)%4], color, 1, 8 );
+			for (int j = 0; j < 4; j++){
+				line(drawing, rect_points[j], rect_points[(j + 1) % 4], color, 1, 8);
 			}
 
-			drawContours( drawing, contours_poly, i, color, 1, 8, vector<Vec4i>(), 0, Point() );
-			rectangle( drawing, boundRect[i].tl(), boundRect[i].br(), color, 2, 8, 0 );
-			circle( drawing, center[i], (int)radius[i], color, 2, 8, 0 );
+			drawContours(drawing, contours_poly, i, color, 1, 8, vector<Vec4i>(), 0, Point());
+			rectangle(drawing, boundRect[i].tl(), boundRect[i].br(), color, 2, 8, 0);
+			circle(drawing, center[i], (int)radius[i], color, 2, 8, 0);
+			}
 		}
+
+		//Show in a window
+
+		if (debugMode){
+			namedWindow("Contours", CV_WINDOW_AUTOSIZE);
+			imshow("Contours", drawing);
+#ifdef EXE
+			if (waitKey(30) >= 0) return;
+#endif
+		}
+
+	
+}
+
+
+void CColorBasics::ShapeBoundingboxWithArea(float* objPosX, float* objPosY, float* objHeight, float* objWidth, float* objAngle, int& shapeNum,
+	float* boundingBox, float* objHue, float minArea, float maxArea)
+{
+	//int thresh = 80;
+	int max_thresh = 255;
+
+	Mat threshold_output;
+	vector<vector<Point> > contours;
+	vector<Vec4i> hierarchy;
+
+	//Mat src_bw(img);
+	Mat src_bw;
+	Mat src(img); //= imread( "./1.png", 1 );
+
+	/// Convert image to gray and blur it
+	cvtColor(src, src_bw, COLOR_BGR2GRAY);
+	blur(src_bw, src_bw, Size(2, 2));
+
+	///// Detect edges using Threshold
+	threshold(src_bw, threshold_output, threshhold, 255, THRESH_BINARY);
+
+	///// Find contours
+	findContours(threshold_output, contours, hierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE, Point(0, 0));
+
+	/// Approximate contours to polygons + get bounding rects and circles
+	vector<vector<Point> > contours_poly(contours.size());
+	vector<Rect> boundRect(contours.size());
+	vector<Point2f>center(contours.size());
+	vector<float>radius(contours.size());
+
+
+	for (int i = 0; i < contours.size(); i++)
+	{
+		if (contours[i].size() != 0){
+			approxPolyDP(Mat(contours[i]), contours_poly[i], 3, true);
+			boundRect[i] = boundingRect(Mat(contours_poly[i]));
+			//minEnclosingCircle((Mat)contours_poly[i], center[i], radius[i]);
+		}
+	}
+
+
+	/// Draw polygonal contour + bonding rects + circles
+	Mat drawing = Mat::zeros(threshold_output.size(), CV_8UC3);
+	bool findBoundingbox = false;
+	for (int i = 0; i< contours.size(); i++)
+	{
+	/*	if (radius[i] > 190)
+		{
+			findBoundingbox = true;
+			boundingBox[0] = boundRect[i].tl().x;
+			boundingBox[1] = boundRect[i].tl().y;
+
+			boundingBox[2] = boundRect[i].br().x;
+			boundingBox[3] = boundRect[i].br().y;
+		}*/
+
+
+
+		//if (radius[i] > minRadius && radius[i] < maxRadius)
+		//{//all the actual objs we need
+
+			RotatedRect rotRect = minAreaRect(Mat(contours_poly[i]));
+			Point2f rect_points[4];
+			rotRect.points(rect_points);
+
+			float rotRectArea = rotRect.size.width * rotRect.size.height;
+			if (rotRectArea < minArea || rotRectArea > maxArea)
+				continue;
+
+
+			/*objPosX[shapeNum] = center[i].x;
+			objPosY[shapeNum] = center[i].y;
+			objHeight[shapeNum] = boundRect[i].height;
+			objWidth[shapeNum] = boundRect[i].width;*/
+
+			objPosX[shapeNum] = rotRect.center.x;
+			objPosY[shapeNum] = rotRect.center.y;
+			objHeight[shapeNum] = rotRect.size.height;
+			objWidth[shapeNum] = rotRect.size.width;
+			objAngle[shapeNum] = rotRect.angle;
+
+
+
+
+			/*for(int k = 0; k < contours_poly[i].size() && k < POINTNUM; k++)
+			{
+			contourPts[shapeNum].posX[k] = contours_poly[i][k].x;
+			contourPts[shapeNum].posY[k] = contours_poly[i][k].y;
+			}
+
+			contourPts[shapeNum].size = contours_poly[i].size();*/
+
+		/*	for (int k = 0; k < 4 && k < POINTNUM; k++)
+			{
+				contourPts[shapeNum].posX[k] = rect_points[4].x;
+				contourPts[shapeNum].posY[k] = rect_points[4].y;
+			}
+
+			contourPts[shapeNum].size = 4;*/
+
+			/*
+			// Create a mask for each contour to mask out that region from image.
+			Mat mask = Mat::zeros(img->nSize, CV_8UC1);
+			drawContours(mask, contours_poly, i, Scalar(255), CV_FILLED); // This is a OpenCV function
+
+			// At this point, mask has value of 255 for pixels within the contour and value of 0 for those not in contour.
+
+			// Extract region using mask for region
+			Mat contourRegion;
+			Mat imageROI;
+			image.copyTo(imageROI, mask); // 'image' is the image you used to compute the contours.
+			contourRegion = imageROI(roi);*/
+
+			//Find the color of the polygon(currently only bounding box) created by the contour
+			Mat img_roi = Mat(src, boundRect[i]);
+			Scalar avgPixelIntensity = mean(img_roi);
+			Scalar color = avgPixelIntensity;
+			//Scalar color = Scalar( rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255) );
+
+			objHue[shapeNum * 3] = color[0];
+			objHue[shapeNum * 3 + 1] = color[1];
+			objHue[shapeNum * 3 + 2] = color[2];
+
+			shapeNum++;
+
+			// Draws rotated minimum bounding rectangle
+			for (int j = 0; j < 4; j++){
+				line(drawing, rect_points[j], rect_points[(j + 1) % 4], color, 1, 8);
+			}
+
+			drawContours(drawing, contours_poly, i, color, 1, 8, vector<Vec4i>(), 0, Point());
+			//rectangle(drawing, boundRect[i].tl(), boundRect[i].br(), color, 2, 8, 0);
+			//circle(drawing, center[i], (int)radius[i], color, 2, 8, 0);
+		//}
 	}
 
 	//Show in a window
 
 	if(debugMode){
-		namedWindow( "Contours", CV_WINDOW_AUTOSIZE );
-		imshow( "Contours", drawing );
+		namedWindow("Contours", CV_WINDOW_AUTOSIZE);
+		imshow("Contours", drawing);
 #ifdef EXE
-		if( waitKey (30) >= 0) return;
+		if (waitKey(30) >= 0) return;
 #endif
 	}
+
+
 }
+
 
 

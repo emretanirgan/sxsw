@@ -11,7 +11,7 @@ public class BackgroundMusic : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+		PlayMusicClip(0);
 	}
 	
 	// Update is called once per frame
